@@ -47,14 +47,13 @@ from datetime import datetime
 
 import requests
 import json
+import os
 
 app = Flask(__name__)
 
 
-CHANNEL_ACCESS_TOKEN = '87c0KHHgqJone/4LjtdRsg64+cbgjwCXTdKwvpzDMD2+OttIrhylZbO/n/fegjdA23Idmnw3qmQPjeLtQqyENLDPCtfJil1Z33XA/W1eUi1FZBfPfGy/nLBUFM3tg1sG3YPybhuHI53h0CLtjnOyIgdB04t89/1O/w1cDnyilFU='
-configuration = Configuration(access_token=CHANNEL_ACCESS_TOKEN)
-handler = WebhookHandler('21ea6980ef605cc17da34964e6f5366e')
-
+configuration = Configuration(access_token=os.getenv('CHANNEL_ACCESS_TOKEN'))
+handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -81,7 +80,7 @@ def handle_message(event):
         line_bot_api = MessagingApi(api_client)
         user_text = event.message.text  # 抓取使用者輸入的文字
         
-        if user_text == '測試用':
+        if user_text == 'A':
             buttons_template = ButtonsTemplate(
                 title='超可愛的吉哇哇',
                 text='(๑•̀ㅂ•́)و✧',
@@ -317,10 +316,9 @@ def create_rich_menu_2():
     with ApiClient(configuration) as api_client:
         line_bot_api = MessagingApi(api_client)
         line_bot_blob_api = MessagingApiBlob(api_client)
-
         # Create rich menu
         headers = {
-            'Authorization': 'Bearer ' + CHANNEL_ACCESS_TOKEN,
+            'Authorization': 'Bearer ' + os.getenv('CHANNEL_ACCESS_TOKEN'),
             'Content-Type': 'application/json'
         }
         body = {
