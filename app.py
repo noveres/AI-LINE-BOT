@@ -23,6 +23,7 @@ from linebot.v3.messaging import (
     AudioMessage,     
     LocationMessage,  
     Emoji,
+    CameraAction,
     FlexMessage,  
     TemplateMessage,
     ConfirmTemplate,
@@ -31,7 +32,27 @@ from linebot.v3.messaging import (
     CarouselColumn,
     ImageCarouselTemplate,
     ImageCarouselColumn,
-    RichMenuArea, RichMenuBounds, RichMenuSize, RichMenuRequest, MessageAction        
+    URIAction,
+    RichMenuArea, RichMenuBounds, RichMenuSize, RichMenuRequest, MessageAction,
+        Configuration,
+    ApiClient,
+    MessagingApi,
+    ReplyMessageRequest,
+    TemplateMessage,
+    ConfirmTemplate,
+    ButtonsTemplate,
+    CarouselTemplate,
+    CarouselColumn,
+    ImageCarouselTemplate,
+    ImageCarouselColumn,
+    MessageAction,
+    URIAction,
+    PostbackAction,
+    DatetimePickerAction,
+    CameraAction,
+    CameraRollAction,
+    LocationAction,
+            
 
   
   
@@ -73,20 +94,20 @@ def callback():
     return 'OK'
 
     
-
 @handler.add(MessageEvent, message=TextMessageContent)
 def handle_message(event):
     with ApiClient(configuration) as api_client:
         line_bot_api = MessagingApi(api_client)
         user_text = event.message.text  # 抓取使用者輸入的文字
-        
+
         if user_text == 'A':
             buttons_template = ButtonsTemplate(
                 title='超可愛的吉哇哇',
                 text='(๑•̀ㅂ•́)و✧',
                 actions=[
-                    PostbackAction(label='輕輕按下去', text='被咬了', data='postback'),
-                ])
+                    PostbackAction(label='輕輕按下去', text='(被咬了)', data='postback'),
+                ]
+            )
             template_message = TemplateMessage(
                 alt_text='Postback Sample',
                 template=buttons_template
@@ -104,21 +125,24 @@ def handle_message(event):
                     messages=[TextMessage(text='吉度憤怒')]
                 )
             )
-            
-        elif user_text == '按鈕':
-            confirm_template = ConfirmTemplate(
-                title='超可愛的吉哇哇',
-                text='你確定要按下按鈕嗎？',
+        elif user_text == 'B':
+            url = request.url_root + 'static/Logo.jpg'
+            url = url.replace("http", "https")
+            app.logger.info("url=" + url)
+            buttons_template = ButtonsTemplate(
+                thumbnail_image_url=url,
+                title='示範',
+                text='詳細說明',
                 actions=[
-                    PostbackAction(label='是', text='是', data='postback'),
-                    PostbackAction(label='否', text='否', data='postback')
-
+                    URIAction(label='連結', uri='https://www.facebook.com/NTUEBIGDATAEDU'),
+                    PostbackAction(label='回傳值', data='ping', displayText='傳了'),
+                    MessageAction(label='傳"哈囉"', text='哈囉'),
+                    DatetimePickerAction(label="選擇時間", data="時間", mode="datetime")
                 ]
-
             )
             template_message = TemplateMessage(
-                alt_text='Confirm alt text',
-                template=confirm_template
+                alt_text="This is a buttons template",
+                template=buttons_template
             )
             line_bot_api.reply_message(
                 ReplyMessageRequest(
@@ -126,7 +150,6 @@ def handle_message(event):
                     messages=[template_message]
                 )
             )
-
 
         elif user_text == '文字':
             line_bot_api.reply_message(
@@ -163,9 +186,7 @@ def handle_message(event):
             line_bot_api.reply_message(
                 ReplyMessageRequest(
                     reply_token=event.reply_token,
-                    messages=[
-                        ImageMessage(original_content_url=url, preview_image_url=url)
-                    ]
+                    messages=[ImageMessage(original_content_url=url, preview_image_url=url)]
                 )
             )
 
@@ -176,9 +197,7 @@ def handle_message(event):
             line_bot_api.reply_message(
                 ReplyMessageRequest(
                     reply_token=event.reply_token,
-                    messages=[
-                        VideoMessage(original_content_url=url, preview_image_url=url)
-                    ]
+                    messages=[VideoMessage(original_content_url=url, preview_image_url=url)]
                 )
             )
 
@@ -190,9 +209,7 @@ def handle_message(event):
             line_bot_api.reply_message(
                 ReplyMessageRequest(
                     reply_token=event.reply_token,
-                    messages=[
-                        AudioMessage(original_content_url=url, duration=duration)
-                    ]
+                    messages=[AudioMessage(original_content_url=url, duration=duration)]
                 )
             )
 
@@ -205,7 +222,6 @@ def handle_message(event):
                     ]
                 )
             )
-   
         else:
             line_bot_api.reply_message(
                 ReplyMessageRequest(
@@ -213,8 +229,6 @@ def handle_message(event):
                     messages=[TextMessage(text=user_text)]
                 )
             )
-
-
 
 
 @handler.add(PostbackEvent)
