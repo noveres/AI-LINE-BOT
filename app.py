@@ -127,18 +127,16 @@ def handle_message(event):
             )
 
         elif user_text == '訪客登記':
-            url = request.url_root + 'static/Logo.jpg'
+            url = request.url_root + 'static/FK.jpg'
             url = url.replace("http", "https")
             app.logger.info("url=" + url)
             buttons_template = ButtonsTemplate(
                 thumbnail_image_url=url,
-                title='示範',
-                text='詳細說明',
+                title='訪客登記',
+                text='減輕工作人員的負擔，可讓業主決定是否接受需要由管理員登記。',
                 actions=[
-                    URIAction(label='連結', uri='https://www.facebook.com/NTUEBIGDATAEDU'),
-                    PostbackAction(label='回傳值', data='ping', displayText='傳了'),
-                    MessageAction(label='傳"哈囉"', text='哈囉'),
-                    DatetimePickerAction(label="選擇時間", data="時間", mode="datetime")
+                    URIAction(label='點我填寫登記表單', uri='https://noveres.github.io/fgbd/'),
+
                 ]
             )
             template_message = TemplateMessage(
@@ -153,18 +151,15 @@ def handle_message(event):
             )
 
         elif user_text == '公共維修填報':
-            url = request.url_root + 'static/Logo.jpg'
+            url = request.url_root + 'static/WS.png'
             url = url.replace("http", "https")
             app.logger.info("url=" + url)
             buttons_template = ButtonsTemplate(
                 thumbnail_image_url=url,
-                title='示範',
-                text='詳細說明',
+                title='公共維修填報',
+                text='資料登錄於公開資料庫，可讓所有使用者快速查詢，節省時間。',
                 actions=[
-                    URIAction(label='連結', uri='https://www.facebook.com/NTUEBIGDATAEDU'),
-                    PostbackAction(label='回傳值', data='ping', displayText='傳了'),
-                    MessageAction(label='傳"哈囉"', text='哈囉'),
-                    DatetimePickerAction(label="選擇時間", data="時間", mode="datetime")
+                    URIAction(label='點我填寫維修表單', uri='https://noveres.github.io/fgbd/maintenance'),
                 ]
             )
             template_message = TemplateMessage(
@@ -178,7 +173,7 @@ def handle_message(event):
                 )
             )
         elif user_text == '維修進度查看':
-            url = request.url_root + 'static/Logo.jpg'
+            url = request.url_root + 'static/CK.png'
             url = url.replace("http", "https")
             app.logger.info("url=" + url)
             buttons_template = ButtonsTemplate(
@@ -186,10 +181,7 @@ def handle_message(event):
                 title='示範',
                 text='詳細說明',
                 actions=[
-                    URIAction(label='連結', uri='https://www.facebook.com/NTUEBIGDATAEDU'),
-                    PostbackAction(label='回傳值', data='ping', displayText='傳了'),
-                    MessageAction(label='傳"哈囉"', text='哈囉'),
-                    DatetimePickerAction(label="選擇時間", data="時間", mode="datetime")
+                    URIAction(label='連結', uri='https://www.google.com'),
                 ]
             )
             template_message = TemplateMessage(
@@ -203,18 +195,15 @@ def handle_message(event):
                 )
             )
         elif user_text == '公告查詢':
-            url = request.url_root + 'static/Logo.jpg'
+            url = request.url_root + 'static/GK.png'
             url = url.replace("http", "https")
             app.logger.info("url=" + url)
             buttons_template = ButtonsTemplate(
                 thumbnail_image_url=url,
-                title='示範',
+                title='示範公告查詢',
                 text='詳細說明',
                 actions=[
-                    URIAction(label='連結', uri='https://www.facebook.com/NTUEBIGDATAEDU'),
-                    PostbackAction(label='回傳值', data='ping', displayText='傳了'),
-                    MessageAction(label='傳"哈囉"', text='哈囉'),
-                    DatetimePickerAction(label="選擇時間", data="時間", mode="datetime")
+                    URIAction(label='連結', uri='https://www.google.com'),
                 ]
             )
             template_message = TemplateMessage(
@@ -228,48 +217,55 @@ def handle_message(event):
                 )
             )
 
+        
+
         # Carousel Template
         elif user_text == '週邊店家的合作折扣':
-            url = request.url_root + 'static/Logo.jpg'
-            url = url.replace("http", "https")
-            app.logger.info("url=" + url)
+            base_url = request.url_root + 'static/'
+            image_urls = [
+                base_url + '01.png',
+                base_url + '02.png',
+                base_url + '03.png'
+            ]
+            image_urls = [url.replace("http", "https") for url in image_urls]
+
+            app.logger.info(f"Image URLs: {image_urls}")
+
             carousel_template = CarouselTemplate(
                 columns=[
                     CarouselColumn(
-                        thumbnail_image_url=url,
+                        thumbnail_image_url=image_urls[0],
                         title='第一項',
                         text='這是第一項的描述',
                         actions=[
                             URIAction(
-                                label='按我前往 Google',
+                                label='按我前往',
                                 uri='https://www.google.com'
                             )
                         ]
                     ),
                     CarouselColumn(
-                        thumbnail_image_url=url,
+                        thumbnail_image_url=image_urls[1],
                         title='第二項',
                         text='這是第二項的描述',
                         actions=[
                             URIAction(
-                                label='按我前往 Yahoo',
-                                uri='https://www.yahoo.com'
-                            )
-                        ]
-                    ),
-                                        CarouselColumn(
-                        thumbnail_image_url=url,
-                        title='第三項',
-                        text='這是第三項的描述',
-                        actions=[
-                            URIAction(
-                                label='按我前往 Google',
+                                label='按我前往',
                                 uri='https://www.google.com'
                             )
                         ]
                     ),
-
-
+                    CarouselColumn(
+                        thumbnail_image_url=image_urls[2],
+                        title='第三項',
+                        text='這是第三項的描述',
+                        actions=[
+                            URIAction(
+                                label='按我前往',
+                                uri='https://www.google.com'
+                            )
+                        ]
+                    ),
                 ]
             )
 
@@ -281,12 +277,11 @@ def handle_message(event):
             line_bot_api.reply_message(
                 ReplyMessageRequest(
                     reply_token=event.reply_token,
-                    messages =[carousel_message]
+                    messages=[carousel_message]
                 )
             )
-
         elif user_text == '快速繳費通道':
-            url = request.url_root + 'static/Logo.jpg'
+            url = request.url_root + 'static/qr.png'
             url = url.replace("http", "https")
             app.logger.info("url=" + url)
             line_bot_api.reply_message(
