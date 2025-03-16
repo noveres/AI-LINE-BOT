@@ -100,7 +100,7 @@ def handle_message(event):
         line_bot_api = MessagingApi(api_client)
         user_text = event.message.text  # 抓取使用者輸入的文字
 
-        if user_text == 'A':
+        if user_text == '吉娃娃':
             buttons_template = ButtonsTemplate(
                 title='超可愛的吉哇哇',
                 text='(๑•̀ㅂ•́)و✧',
@@ -125,7 +125,8 @@ def handle_message(event):
                     messages=[TextMessage(text='吉度憤怒')]
                 )
             )
-        elif user_text == 'B':
+
+        elif user_text == '訪客登記':
             url = request.url_root + 'static/Logo.jpg'
             url = url.replace("http", "https")
             app.logger.info("url=" + url)
@@ -150,6 +151,151 @@ def handle_message(event):
                     messages=[template_message]
                 )
             )
+
+        elif user_text == '公共維修填報':
+            url = request.url_root + 'static/Logo.jpg'
+            url = url.replace("http", "https")
+            app.logger.info("url=" + url)
+            buttons_template = ButtonsTemplate(
+                thumbnail_image_url=url,
+                title='示範',
+                text='詳細說明',
+                actions=[
+                    URIAction(label='連結', uri='https://www.facebook.com/NTUEBIGDATAEDU'),
+                    PostbackAction(label='回傳值', data='ping', displayText='傳了'),
+                    MessageAction(label='傳"哈囉"', text='哈囉'),
+                    DatetimePickerAction(label="選擇時間", data="時間", mode="datetime")
+                ]
+            )
+            template_message = TemplateMessage(
+                alt_text="This is a buttons template",
+                template=buttons_template
+            )
+            line_bot_api.reply_message(
+                ReplyMessageRequest(
+                    reply_token=event.reply_token,
+                    messages=[template_message]
+                )
+            )
+        elif user_text == '維修進度查看':
+            url = request.url_root + 'static/Logo.jpg'
+            url = url.replace("http", "https")
+            app.logger.info("url=" + url)
+            buttons_template = ButtonsTemplate(
+                thumbnail_image_url=url,
+                title='示範',
+                text='詳細說明',
+                actions=[
+                    URIAction(label='連結', uri='https://www.facebook.com/NTUEBIGDATAEDU'),
+                    PostbackAction(label='回傳值', data='ping', displayText='傳了'),
+                    MessageAction(label='傳"哈囉"', text='哈囉'),
+                    DatetimePickerAction(label="選擇時間", data="時間", mode="datetime")
+                ]
+            )
+            template_message = TemplateMessage(
+                alt_text="This is a buttons template",
+                template=buttons_template
+            )
+            line_bot_api.reply_message(
+                ReplyMessageRequest(
+                    reply_token=event.reply_token,
+                    messages=[template_message]
+                )
+            )
+        elif user_text == '公告查詢':
+            url = request.url_root + 'static/Logo.jpg'
+            url = url.replace("http", "https")
+            app.logger.info("url=" + url)
+            buttons_template = ButtonsTemplate(
+                thumbnail_image_url=url,
+                title='示範',
+                text='詳細說明',
+                actions=[
+                    URIAction(label='連結', uri='https://www.facebook.com/NTUEBIGDATAEDU'),
+                    PostbackAction(label='回傳值', data='ping', displayText='傳了'),
+                    MessageAction(label='傳"哈囉"', text='哈囉'),
+                    DatetimePickerAction(label="選擇時間", data="時間", mode="datetime")
+                ]
+            )
+            template_message = TemplateMessage(
+                alt_text="This is a buttons template",
+                template=buttons_template
+            )
+            line_bot_api.reply_message(
+                ReplyMessageRequest(
+                    reply_token=event.reply_token,
+                    messages=[template_message]
+                )
+            )
+
+        # Carousel Template
+        elif user_text == '週邊店家的合作折扣':
+            url = request.url_root + 'static/Logo.jpg'
+            url = url.replace("http", "https")
+            app.logger.info("url=" + url)
+            carousel_template = CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        thumbnail_image_url=url,
+                        title='第一項',
+                        text='這是第一項的描述',
+                        actions=[
+                            URIAction(
+                                label='按我前往 Google',
+                                uri='https://www.google.com'
+                            )
+                        ]
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url=url,
+                        title='第二項',
+                        text='這是第二項的描述',
+                        actions=[
+                            URIAction(
+                                label='按我前往 Yahoo',
+                                uri='https://www.yahoo.com'
+                            )
+                        ]
+                    ),
+                                        CarouselColumn(
+                        thumbnail_image_url=url,
+                        title='第三項',
+                        text='這是第三項的描述',
+                        actions=[
+                            URIAction(
+                                label='按我前往 Google',
+                                uri='https://www.google.com'
+                            )
+                        ]
+                    ),
+
+
+                ]
+            )
+
+            carousel_message = TemplateMessage(
+                alt_text='這是 Carousel Template',
+                template=carousel_template
+            )
+
+            line_bot_api.reply_message(
+                ReplyMessageRequest(
+                    reply_token=event.reply_token,
+                    messages =[carousel_message]
+                )
+            )
+
+        elif user_text == '快速繳費通道':
+            url = request.url_root + 'static/Logo.jpg'
+            url = url.replace("http", "https")
+            app.logger.info("url=" + url)
+            line_bot_api.reply_message(
+                ReplyMessageRequest(
+                    reply_token=event.reply_token,
+                    messages=[ImageMessage(original_content_url=url, preview_image_url=url)]
+                )
+            )
+
 
         elif user_text == '文字':
             line_bot_api.reply_message(
@@ -238,94 +384,6 @@ def handle_postback(event):
 
 
 
-
-def create_rich_menu_1():
-    with ApiClient(configuration) as api_client:
-        line_bot_api = MessagingApi(api_client)
-        line_bot_blob_api = MessagingApiBlob(api_client)
-
-        areas = [
-            RichMenuArea(
-                bounds=RichMenuBounds(
-                    x=0,
-                    y=0,
-                    width=833,
-                    height=843
-                ),
-                action=MessageAction(text='A')
-            ),
-            RichMenuArea(
-                bounds=RichMenuBounds(
-                    x=834,
-                    y=0,
-                    width=833,
-                    height=843
-                ),
-                action=MessageAction(text='B')
-            ),
-            RichMenuArea(
-                bounds=RichMenuBounds(
-                    x=1663,
-                    y=0,
-                    width=834,
-                    height=843
-                ),
-                action=MessageAction(text='C')
-            ),
-            RichMenuArea(
-                bounds=RichMenuBounds(
-                    x=0,
-                    y=843,
-                    width=833,
-                    height=843
-                ),
-                action=MessageAction(text='D')
-            ),
-            RichMenuArea(
-                bounds=RichMenuBounds(
-                    x=834,
-                    y=843,
-                    width=833,
-                    height=843
-                ),
-                action=MessageAction(text='E')
-            ),
-            RichMenuArea(
-                bounds=RichMenuBounds(
-                    x=1662,
-                    y=843,
-                    width=834,
-                    height=843
-                ),
-                action=MessageAction(text='F')
-            )
-        ]
-
-        rich_menu_to_create = RichMenuRequest(
-            size=RichMenuSize(
-                width=2500,
-                height=1686,
-            ),
-            selected=True,
-            name="圖文選單1",
-            chat_bar_text="查看更多資訊",
-            areas=areas
-        )
-
-        rich_menu_id = line_bot_api.create_rich_menu(
-            rich_menu_request=rich_menu_to_create
-        ).rich_menu_id
-
-        with open('./public/richmenu-a.png', 'rb') as image:
-            line_bot_blob_api.set_rich_menu_image(
-                rich_menu_id=rich_menu_id,
-                body=bytearray(image.read()),
-                _headers={'Content-Type': 'image/png'}
-            )
-
-        line_bot_api.set_default_rich_menu(rich_menu_id)
-
-
 def create_rich_menu_2():
     with ApiClient(configuration) as api_client:
         line_bot_api = MessagingApi(api_client)
@@ -353,7 +411,7 @@ def create_rich_menu_2():
                     },
                     "action": {
                         "type": "message",
-                        "text": "A"
+                        "text": "訪客登記"
                     }
                 },
                 {
@@ -365,7 +423,7 @@ def create_rich_menu_2():
                     },
                     "action": {
                         "type": "message",
-                        "text": "B"
+                        "text": "公共維修填報"
                     }
                 },
                 {
@@ -377,7 +435,7 @@ def create_rich_menu_2():
                     },
                     "action": {
                         "type": "message",
-                        "text": "C"
+                        "text": "維修進度查看"
                     }
                 },
                 {
@@ -389,7 +447,7 @@ def create_rich_menu_2():
                     },
                     "action": {
                         "type": "message",
-                        "text": "D"
+                        "text": "公告查詢"
                     }
                 },
                 {
@@ -401,7 +459,7 @@ def create_rich_menu_2():
                     },
                     "action": {
                         "type": "message",
-                        "text": "E"
+                        "text": "週邊店家的合作折扣"
                     }
                 },
                 {
@@ -413,7 +471,7 @@ def create_rich_menu_2():
                     },
                     "action": {
                         "type": "message",
-                        "text": "F"
+                        "text": "快速繳費通道"
                     }
                 }
             ]
