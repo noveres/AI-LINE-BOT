@@ -312,7 +312,7 @@ def analyze_text(text):
                 "command": "快速繳費通道"
             },
             "nearby_discount": {  # 週邊優惠意圖
-                "text": "以下是週邊店家的合作折扣信息：",
+                "text": "您可以使用以下來買好貨查看週邊店家的合作折扣信息",
                 "command": "週邊店家的合作折扣"
             },
             "help": {  # 幫助意圖
@@ -408,7 +408,7 @@ def handle_message(event):
                 ]
             )
             template_message = TemplateMessage(
-                alt_text='Postback Sample',
+                alt_text='吉娃娃',
                 template=buttons_template
             )
             line_bot_api.reply_message(
@@ -439,7 +439,7 @@ def handle_message(event):
                 ]
             )
             template_message = TemplateMessage(
-                alt_text="This is a buttons template",
+                alt_text="訪客登記",
                 template=buttons_template
             )
             line_bot_api.reply_message(
@@ -462,7 +462,7 @@ def handle_message(event):
                 ]
             )
             template_message = TemplateMessage(
-                alt_text="This is a buttons template",
+                alt_text="公共維修填報",
                 template=buttons_template
             )
             line_bot_api.reply_message(
@@ -484,7 +484,7 @@ def handle_message(event):
                 ]
             )
             template_message = TemplateMessage(
-                alt_text="This is a buttons template",
+                alt_text="維修進度查看",
                 template=buttons_template
             )
             line_bot_api.reply_message(
@@ -506,7 +506,7 @@ def handle_message(event):
                 ]
             )
             template_message = TemplateMessage(
-                alt_text="This is a buttons template",
+                alt_text="公告查詢",
                 template=buttons_template
             )
             line_bot_api.reply_message(
@@ -569,7 +569,7 @@ def handle_message(event):
             )
 
             carousel_message = TemplateMessage(
-                alt_text='這是 Carousel Template',
+                alt_text="週邊店家優惠",
                 template=carousel_template
             )
 
