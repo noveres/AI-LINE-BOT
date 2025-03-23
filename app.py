@@ -65,16 +65,313 @@ from linebot.v3.webhooks import (
     )
 from datetime import datetime
 
+# 新增 Azure AI Language 庫
+from azure.ai.language.conversations import ConversationAnalysisClient
+from azure.core.credentials import AzureKeyCredential
+from dotenv import load_dotenv
 
 import requests
 import json
 import os
+
+# 載入環境變數 (.env 文件)
+load_dotenv()
 
 app = Flask(__name__)
 
 
 configuration = Configuration(access_token=os.getenv('CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
+
+# 初始化 Azure AI Language 客戶端
+azure_language_endpoint = os.getenv('AZURE_LANGUAGE_ENDPOINT')
+azure_language_key = os.getenv('AZURE_LANGUAGE_KEY')
+
+# 提取實體函數
+def extract_entities(result):
+    """
+    從 Azure AI Language 分析結果中提取實體
+    
+    參數：
+        result: Azure AI Language 服務返回的分析結果
+        
+    返回：
+        提取的實體字典，格式為 {實體類型: 實體值}
+    """
+    # 實體提取的字典
+    entities = {}
+    
+    # 檢查結果是否包含實體
+    prediction = result["result"].get("prediction", {})
+    if prediction and "entities" in prediction and prediction["entities"]:
+        print("找到以下實體:")
+        # 迭代所有找到的實體
+        for entity in prediction["entities"]:
+            category = entity.get("category", "")
+            text = entity.get("text", "")
+            
+            # 將實體添加到字典中
+            if category:
+                entities[category] = text
+                print(f"  - {category}: {text}")
+    else:
+        print("未找到任何實體")
+    
+    return entities
+
+# 處理維修實體函數
+def process_maintenance_entities(entities):
+    """
+    根據提取的實體，生成更具體的維修相關回應
+    
+    參數：
+        entities: 提取的實體字典
+        
+    返回：
+        基於實體信息的個性化回應
+    """
+    # 獲取各種實體值
+    facility = entities.get("facility_type", "")
+    location = entities.get("location", "")
+    issue = entities.get("issue_type", "")
+    
+    # 構建更具體的回應
+    response = "您報告的是"
+    
+    if location:
+        response += f"{location}的"
+    
+    if facility:
+        response += f"{facility}"
+    else:
+        response += "設施"
+    
+    if issue:
+        response += f"{issue}問題"
+    else:
+        response += "問題"
+    
+    return response + "，請點擊下方按鈕填寫詳細的維修表單，我們會盡快處理。"
+
+# 處理問候實體函數
+def process_greeting_entities(entities):
+    """
+    根據提取的實體，生成更具體的問候相關回應
+    
+    參數：
+        entities: 提取的實體字典
+        
+    返回：
+        基於實體信息的個性化回應
+    """
+    # 獲取用戶關注點
+    help_topic = entities.get("help_topic", "")
+    user_concern = entities.get("user_concern", "")
+    time_reference = entities.get("time_reference", "")
+    
+    # 簡化的問候處理邏輯
+    greeting = "您好！"
+    
+    # 檢查是否是私人請求 - 放寬判斷條件，只要有user_concern就視為私人請求
+    if user_concern:
+        return f"{greeting}{_handle_private_request(user_concern)}"
+    
+    # 如果是其他主題的請求
+    if help_topic:
+        return f"{greeting}有什麼我可以幫您的嗎？{_get_help_topic_response(help_topic)}"
+    else:
+        return f"{greeting}有什麼我可以幫您的嗎？您可以詢問有關訪客登記、公共維修、公告查詢等服務。"
+
+# 處理幫助實體函數
+def process_help_entities(entities):
+    """
+    根據提取的實體，生成更具體的幫助相關回應
+    
+    參數：
+        entities: 提取的實體字典
+        
+    返回：
+        基於實體信息的個性化回應
+    """
+    # 獲取幫助主題和用戶需求
+    help_topic = entities.get("help_topic", "")
+    user_need = entities.get("user_need", "")
+    
+    # 根據不同的幫助主題提供相應引導
+    if help_topic == "訪客登記" or help_topic == "訪客":
+        return "關於訪客登記，您可以:\n1. 點擊選單中的「訪客登記」\n2. 填寫訪客資料\n3. 系統會自動通知相關人員\n\n需要更多幫助嗎？"
+    elif help_topic == "維修" or help_topic == "公共維修":
+        return "關於公共維修，您可以:\n1. 點擊選單中的「公共維修填報」\n2. 填寫維修內容和位置\n3. 追蹤「維修進度查看」\n\n有其他問題嗎？"
+    elif help_topic == "公告" or help_topic == "查詢公告":
+        return "關於公告查詢，您可以:\n1. 點擊選單中的「公告查詢」\n2. 查看最新社區公告\n\n需要了解其他功能嗎？"
+    elif help_topic == "繳費" or help_topic == "繳費相關":
+        return "關於繳費相關，您可以:\n1. 點擊選單中的「繳費相關」\n2. 查看費用明細和繳費方式\n\n還有其他問題嗎？"
+    elif help_topic == "優惠" or help_topic == "週邊優惠":
+        return "關於週邊優惠，您可以:\n1. 點擊選單中的「週邊店家的合作折扣」\n2. 瀏覽合作商家的折扣信息\n\n需要其他協助嗎？"
+    else:
+        return "您好！我是社區服務機器人，可以協助您:\n• 訪客登記\n• 公共維修申報與進度查詢\n• 公告查詢\n• 繳費相關\n• 週邊優惠資訊\n\n請問您需要什麼幫助？"
+
+# 輔助函數：根據幫助主題生成回應
+def _get_help_topic_response(help_topic):
+    """根據幫助主題生成引導性回應"""
+    if help_topic == "維修":
+        return "需要申報公共維修嗎？可以告訴我詳細情況或直接點擊選單中的「公共維修填報」。"
+    elif help_topic == "訪客":
+        return "要進行訪客登記嗎？可以直接點擊選單中的「訪客登記」或告訴我詳細情況。"
+    elif help_topic == "公告":
+        return "想查看最新公告嗎？可以直接點擊選單中的「公告查詢」。"
+    elif help_topic == "繳費":
+        return "關於繳費的問題，可以點擊選單中的「繳費相關」了解詳情。"
+    elif help_topic == "優惠":
+        return "想了解週邊優惠嗎？可以點擊選單中的「週邊店家的合作折扣」查看詳情。"
+    else:
+        return "您可以詢問有關訪客登記、公共維修、公告查詢等服務。"
+
+# 輔助函數：處理私人請求
+def _handle_private_request(user_concern):
+    """處理私人請求，提供適當的回應"""
+    if "廁所" in user_concern or "洗手台" in user_concern or "馬桶" in user_concern:
+        return "很抱歉，我們只能處理公共區域的維修請求，住宅內部的衛浴設備請聯繫專業水電工或物業管理處。"
+    elif "冷氣" in user_concern or "空調" in user_concern:
+        return "很抱歉，住宅內的冷氣或空調問題屬於私人維修範圍，建議您聯繫物業推薦的空調維修服務。"
+    elif "房間" in user_concern or "客廳" in user_concern or "臥室" in user_concern:
+        return "很抱歉，我們只能處理公共區域的維修請求，住宅內部的問題請聯繫物業管理處尋求協助。"
+    else:
+        return "很抱歉，若是私人住宅內的維修需求，請直接聯繫物業管理處。我們的服務範圍僅限於社區公共區域。"
+
+# 創建 Azure AI Language 分析函數
+def analyze_text(text):
+    """
+    使用 Azure AI Language 服務分析文本內容，識別用戶意圖和實體
+    
+    參數：
+        text: 用戶輸入的文本
+        
+    返回：
+        (分析結果, 回應文本, [可選命令])
+    """
+    # 檢查是否設置了 Azure 憑證
+    if not azure_language_endpoint or not azure_language_key:
+        return {"error": "Azure AI Language 服務尚未設置正確"}, "我們的AI服務目前無法使用，請嘗試使用選單選項或稍後再試。"
+    
+    try:
+        # 建立 Azure AI Language 客戶端
+        client = ConversationAnalysisClient(
+            endpoint=azure_language_endpoint, 
+            credential=AzureKeyCredential(azure_language_key)
+        )
+        
+        # 設置分析參數 - 發送到 Azure 的請求結構
+        task = {
+            "kind": "Conversation",  # 指定為對話分析任務
+            "analysisInput": {
+                "conversationItem": {
+                    "id": "1",  # 對話項目ID
+                    "text": text,  # 用戶輸入的文字
+                    "participantId": "user"  # 對話參與者標識
+                }
+            },
+            "parameters": {
+                "projectName": "WuyeGuanli",  # Azure 專案名稱
+                "deploymentName": "Line-CLU",  # 部署名稱
+                "verbose": True  # 返回詳細結果
+            }
+        }
+        
+        # 呼叫 Azure 服務進行分析
+        result = client.analyze_conversation(task=task)
+        
+        # 從結果中提取頂部意圖和置信度分數
+        top_intent = result["result"]["prediction"]["topIntent"]
+        confidence = result["result"]["prediction"]["intents"][0]["confidenceScore"] if result["result"]["prediction"]["intents"] else 0
+        
+        # 提取實體信息
+        entities = extract_entities(result)
+        app.logger.info(f"提取的實體: {entities}")
+        
+        # 根據意圖提供對應的回覆 - 意圖和回應映射表
+        intent_mapping = {
+            "visitor_registration": {  # 訪客登記意圖
+                "text": "您似乎想了解訪客登記的相關資訊，請點擊下方連結進行訪客登記。",
+                "command": "訪客登記"
+            },
+            "maintenance": {  # 公共維修意圖
+                "text": "您需要報修公共設施嗎？請點擊下方填寫維修表單。",
+                "command": "公共維修填報"
+            },
+            "maintenance_status": {  # 維修進度查詢意圖
+                "text": "您想查詢維修進度，請點擊下方連結查看。",
+                "command": "維修進度查看"
+            },
+            "announcement": {  # 公告查詢意圖
+                "text": "您可以通過以下連結查詢最新的公告：",
+                "command": "公告查詢"
+            },
+            "payment": {  # 繳費相關意圖
+                "text": "您可以使用以下快速繳費通道：",
+                "command": "快速繳費通道"
+            },
+            "nearby_discount": {  # 週邊優惠意圖
+                "text": "以下是週邊店家的合作折扣信息：",
+                "command": "週邊店家的合作折扣"
+            },
+            "help": {  # 幫助意圖
+                "text": "您好！我是社區服務機器人，可以幫您處理訪客登記、公共維修、查詢公告、繳費以及提供周邊優惠信息。請告訴我您需要什麼幫助？",
+                "command": None
+            },
+            "greeting": {  # 問候意圖
+                "text": "您好！有什麼我可以幫您的嗎？您可以詢問有關訪客登記、公共維修、公告查詢等服務。",
+                "command": None
+            }
+        }
+        
+        # 中文意圖映射到英文意圖（兼容性）
+        chinese_to_english_intent = {
+            "查詢訪客登記": "visitor_registration",
+            "公共維修": "maintenance",
+            "維修進度": "maintenance_status",
+            "查詢公告": "announcement",
+            "繳費相關": "payment",
+            "週邊優惠": "nearby_discount",
+            "幫助": "help",
+            "問候": "greeting"
+        }
+        
+        # 兼容中文和英文意圖名稱
+        if top_intent in chinese_to_english_intent:
+            top_intent = chinese_to_english_intent[top_intent]
+        
+        # 如果是已知意圖且信心度足夠
+        if top_intent in intent_mapping and confidence >= 0.6:
+            response = intent_mapping[top_intent]["text"]
+            command = intent_mapping[top_intent]["command"]
+            
+            # 如果有實體且是維修意圖，可以生成更個性化的回應
+            if entities:
+                if top_intent == "maintenance":
+                    # 檢查是否為私人請求
+                    if "user_concern" in entities:
+                        user_concern = entities["user_concern"]
+                        greeting = "您好！"
+                        response = f"{greeting}{_handle_private_request(user_concern)}"
+                        command = None  # 私人請求不提供命令
+                    else:
+                        response = process_maintenance_entities(entities)
+                elif top_intent == "greeting":
+                    response = process_greeting_entities(entities)
+                elif top_intent == "help":
+                    response = process_help_entities(entities)
+            
+            return result, response, command if command else None
+        
+        # 如果信心度不夠或沒有匹配的意圖，提供通用回覆
+        return result, "抱歉，我不確定您想要什麼信息。您可以嘗試使用下方的選單，或更清楚地描述您的需求，例如「訪客登記」、「公共維修」或「查詢公告」等。", None
+    
+    except Exception as e:
+        # 記錄錯誤並返回友好提示
+        print(f"Azure AI Language 服務出錯: {str(e)}")
+        return {"error": str(e)}, "抱歉，AI服務暫時遇到問題。請嘗試使用選單選項，或稍後再試。", None
+
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -99,7 +396,9 @@ def handle_message(event):
     with ApiClient(configuration) as api_client:
         line_bot_api = MessagingApi(api_client)
         user_text = event.message.text  # 抓取使用者輸入的文字
-
+        
+        print(f"\n====== 用戶輸入: {user_text} ======")
+        
         if user_text == '吉娃娃':
             buttons_template = ButtonsTemplate(
                 title='超可愛的吉哇哇',
@@ -178,8 +477,8 @@ def handle_message(event):
             app.logger.info("url=" + url)
             buttons_template = ButtonsTemplate(
                 thumbnail_image_url=url,
-                title='示範',
-                text='詳細說明',
+                title='維修進度查看',
+                text='快速查看公共維修的進度，避免錯過重要的維修事件。',
                 actions=[
                     URIAction(label='連結', uri='https://www.google.com'),
                 ]
@@ -200,8 +499,8 @@ def handle_message(event):
             app.logger.info("url=" + url)
             buttons_template = ButtonsTemplate(
                 thumbnail_image_url=url,
-                title='示範公告查詢',
-                text='詳細說明',
+                title='公告查詢',
+                text='快速查詢最新公告，避免錯過重要的活動。',
                 actions=[
                     URIAction(label='連結', uri='https://www.google.com'),
                 ]
@@ -364,21 +663,63 @@ def handle_message(event):
                 )
             )
         else:
-            line_bot_api.reply_message(
-                ReplyMessageRequest(
-                    reply_token=event.reply_token,
-                    messages=[TextMessage(text=user_text)]
+            # 使用 Azure AI Language 服務分析用戶意圖
+            try:
+                # 調用 analyze_text 函數分析用戶輸入
+                result, response_text, command = analyze_text(user_text)
+                
+                print(f"分析結果: 意圖={result.get('result', {}).get('prediction', {}).get('topIntent', '未知')}")
+                print(f"回應內容: {response_text}")
+                
+                # 判斷是否返回了有效命令
+                valid_commands = ['訪客登記', '公共維修填報', '維修進度查看', '公告查詢', '快速繳費通道', '週邊店家的合作折扣']
+                
+                # 如果有返回命令且是有效命令
+                if command and command in valid_commands:
+                    # 分步處理策略：
+                    # 1. 先發送回應說明，解釋我們理解了用戶意圖
+                    line_bot_api.reply_message(
+                        ReplyMessageRequest(
+                            reply_token=event.reply_token,
+                            messages=[TextMessage(text=response_text)]
+                        )
+                    )
+                    
+                    # 2. 這裡可以添加觸發實際功能的代碼
+                    # 注意：LINE Bot API 不支持直接模擬用戶發送命令
+                    # 在實際應用中，您有以下選擇：
+                    # a) 創建一個單獨的函數來處理各種命令並返回適當的回應
+                    # b) 在這裡直接複製對應命令處理的代碼邏輯
+                    # c) 在用戶下一次互動時記住上下文，提供引導式體驗
+                    
+                    # 未來自動化擴展建議：實現一個通用的命令處理器
+                    # def handle_command(command, user_id):
+                    #     # 根據命令執行相應的功能
+                    #     # 返回適當的回應
+                else:
+                    # 如果沒有有效命令，直接回傳 AI 的回應
+                    line_bot_api.reply_message(
+                        ReplyMessageRequest(
+                            reply_token=event.reply_token,
+                            messages=[TextMessage(text=response_text)]
+                        )
+                    )
+            except Exception as e:
+                # 出錯時返回友好的錯誤信息，並記錄詳細錯誤便於調試
+                app.logger.error(f"處理用戶訊息時出錯: {str(e)}")
+                line_bot_api.reply_message(
+                    ReplyMessageRequest(
+                        reply_token=event.reply_token,
+                        messages=[TextMessage(text="抱歉，我暫時無法處理您的請求。請稍後再試或使用選單選項。")]
+                    )
                 )
-            )
-
 
 @handler.add(PostbackEvent)
 def handle_postback(event):
     if event.postback.data == 'postback':
         print('Postback event is triggered')
 
-
-
+# 創建圖文選單
 def create_rich_menu_2():
     with ApiClient(configuration) as api_client:
         line_bot_api = MessagingApi(api_client)
@@ -488,13 +829,6 @@ def create_rich_menu_2():
         line_bot_api.set_default_rich_menu(rich_menu_id)
 
 create_rich_menu_2()
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
     app.run()

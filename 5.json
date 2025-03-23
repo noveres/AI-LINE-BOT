@@ -1,0 +1,312 @@
+[
+    {
+        "text": "我想了解如何登記訪客",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": [
+            {
+                "category": "user_need",
+                "offset": 1,
+                "length": 2
+            },
+            {
+                "category": "help_topic",
+                "offset": 6,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "請問怎麼查詢社區公告",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": [
+            {
+                "category": "user_need",
+                "offset": 3,
+                "length": 2
+            },
+            {
+                "category": "help_topic",
+                "offset": 5,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "能不能告訴我如何使用訪客登記功能",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": [
+            {
+                "category": "user_need",
+                "offset": 6,
+                "length": 2
+            },
+            {
+                "category": "help_topic",
+                "offset": 9,
+                "length": 6
+            }
+        ]
+    },
+    {
+        "text": "我需要幫助處理維修申請",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": [
+            {
+                "category": "user_need",
+                "offset": 1,
+                "length": 4
+            },
+            {
+                "category": "help_topic",
+                "offset": 7,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "請指導我如何查看維修進度",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": [
+            {
+                "category": "user_need",
+                "offset": 1,
+                "length": 2
+            },
+            {
+                "category": "help_topic",
+                "offset": 7,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "想了解一下繳費方式",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": [
+            {
+                "category": "user_need",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "help_topic",
+                "offset": 5,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "可以教我怎麼尋找附近的優惠嗎",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": [
+            {
+                "category": "user_need",
+                "offset": 2,
+                "length": 1
+            },
+            {
+                "category": "help_topic",
+                "offset": 6,
+                "length": 6
+            }
+        ]
+    },
+    {
+        "text": "我在找操作說明",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": [
+            {
+                "category": "user_need",
+                "offset": 2,
+                "length": 1
+            },
+            {
+                "category": "help_topic",
+                "offset": 3,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "找不到如何提交問題的說明",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": [
+            {
+                "category": "user_need",
+                "offset": 4,
+                "length": 2
+            },
+            {
+                "category": "help_topic",
+                "offset": 6,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "有沒有使用手冊可以參考",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": [
+            {
+                "category": "user_need",
+                "offset": 4,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "社區系統的功能操作指引在哪",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": [
+            {
+                "category": "user_need",
+                "offset": 5,
+                "length": 6
+            },
+            {
+                "category": "help_topic",
+                "offset": 0,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "我要查詢繳費紀錄但不知道怎麼做",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": [
+            {
+                "category": "user_need",
+                "offset": 1,
+                "length": 2
+            },
+            {
+                "category": "help_topic",
+                "offset": 3,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "早安，請問有什麼可以幫助您",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "你好，我想問一下訪客登記",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": [
+            {
+                "category": "help_topic",
+                "offset": 8,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "早上好，我家的冷氣壞了",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 3
+            },
+            {
+                "category": "help_topic",
+                "offset": 7,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "午安，我想詢問一下管理費繳納問題",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "help_topic",
+                "offset": 7,
+                "length": 8
+            }
+        ]
+    },
+    {
+        "text": "您好，我有個維修需求",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": [
+            {
+                "category": "help_topic",
+                "offset": 5,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "嗨，請問有新的公告嗎",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": [
+            {
+                "category": "help_topic",
+                "offset": 6,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "晚上好，我想了解一下停車相關事宜",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 3
+            },
+            {
+                "category": "help_topic",
+                "offset": 9,
+                "length": 6
+            }
+        ]
+    },
+    {
+        "text": "哈囉，我想查詢附近優惠",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": [
+            {
+                "category": "help_topic",
+                "offset": 5,
+                "length": 6
+            }
+        ]
+    }
+]

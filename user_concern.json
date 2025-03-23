@@ -1,0 +1,217 @@
+[
+    {
+        "text": "我家廁所漏水怎麼辦",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "user_concern",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "facility_type",
+                "offset": 2,
+                "length": 2
+            },
+            {
+                "category": "issue_type",
+                "offset": 4,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "幫我看一下私人住宅的水管",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "user_concern",
+                "offset": 5,
+                "length": 4
+            },
+            {
+                "category": "facility_type",
+                "offset": 11,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "我們家冷氣不冷",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "user_concern",
+                "offset": 0,
+                "length": 3
+            },
+            {
+                "category": "facility_type",
+                "offset": 3,
+                "length": 2
+            },
+            {
+                "category": "issue_type",
+                "offset": 5,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "我住宅的門鎖壞了",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "user_concern",
+                "offset": 0,
+                "length": 3
+            },
+            {
+                "category": "facility_type",
+                "offset": 4,
+                "length": 2
+            },
+            {
+                "category": "issue_type",
+                "offset": 6,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "私人廚房有異味",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "user_concern",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "facility_type",
+                "offset": 2,
+                "length": 2
+            },
+            {
+                "category": "issue_type",
+                "offset": 4,
+                "length": 3
+            }
+        ]
+    },
+    {
+        "text": "我的臥室窗戶關不緊",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "user_concern",
+                "offset": 0,
+                "length": 4
+            },
+            {
+                "category": "facility_type",
+                "offset": 4,
+                "length": 2
+            },
+            {
+                "category": "issue_type",
+                "offset": 6,
+                "length": 3
+            }
+        ]
+    },
+    {
+        "text": "客廳的燈泡需要更換",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "user_concern",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "facility_type",
+                "offset": 3,
+                "length": 2
+            },
+            {
+                "category": "issue_type",
+                "offset": 5,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "家裡的電視接收不良",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "user_concern",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "facility_type",
+                "offset": 3,
+                "length": 2
+            },
+            {
+                "category": "issue_type",
+                "offset": 5,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "我住家的電源插座有問題",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "user_concern",
+                "offset": 0,
+                "length": 3
+            },
+            {
+                "category": "facility_type",
+                "offset": 4,
+                "length": 4
+            },
+            {
+                "category": "issue_type",
+                "offset": 8,
+                "length": 3
+            }
+        ]
+    },
+    {
+        "text": "房間牆壁有霉斑",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "user_concern",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "facility_type",
+                "offset": 2,
+                "length": 2
+            },
+            {
+                "category": "issue_type",
+                "offset": 4,
+                "length": 3
+            }
+        ]
+    }
+]

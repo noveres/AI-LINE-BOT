@@ -1,0 +1,957 @@
+[
+    {
+        "text": "我想登記訪客",
+        "language": "zh-tw",
+        "intent": "visitor_registration",
+        "entities": []
+    },
+    {
+        "text": "如何幫朋友辦理訪客登記",
+        "language": "zh-tw",
+        "intent": "visitor_registration",
+        "entities": []
+    },
+    {
+        "text": "我有親友要來訪，需要登記嗎",
+        "language": "zh-tw",
+        "intent": "visitor_registration",
+        "entities": []
+    },
+    {
+        "text": "今天有快遞要來，需要提前登記嗎",
+        "language": "zh-tw",
+        "intent": "visitor_registration",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "明天會有維修工人來修理冷氣，怎麼登記",
+        "language": "zh-tw",
+        "intent": "visitor_registration",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "facility_type",
+                "offset": 14,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "訪客登記流程是什麼",
+        "language": "zh-tw",
+        "intent": "visitor_registration",
+        "entities": []
+    },
+    {
+        "text": "如何替訪客辦理臨時出入證",
+        "language": "zh-tw",
+        "intent": "visitor_registration",
+        "entities": []
+    },
+    {
+        "text": "送貨人員要進社區該如何處理",
+        "language": "zh-tw",
+        "intent": "visitor_registration",
+        "entities": []
+    },
+    {
+        "text": "計程車司機接我要進來，需要登記嗎",
+        "language": "zh-tw",
+        "intent": "visitor_registration",
+        "entities": []
+    },
+    {
+        "text": "我想提前為家教老師做訪客登記",
+        "language": "zh-tw",
+        "intent": "visitor_registration",
+        "entities": []
+    },
+    {
+        "text": "訪客登記需要準備什麼資料",
+        "language": "zh-tw",
+        "intent": "visitor_registration",
+        "entities": []
+    },
+    {
+        "text": "朋友要來家裡過夜，需要特別登記嗎",
+        "language": "zh-tw",
+        "intent": "visitor_registration",
+        "entities": []
+    },
+    {
+        "text": "電梯壞了",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "facility_type",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "issue_type",
+                "offset": 2,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "A棟的電梯故障了",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "location",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "facility_type",
+                "offset": 3,
+                "length": 2
+            },
+            {
+                "category": "issue_type",
+                "offset": 5,
+                "length": 2
+            }
+        ]
+    },
+   {
+    "text": "地下停車場有漏水情況",
+    "language": "zh-tw",
+    "intent": "maintenance",
+    "entities": [
+        {
+            "category": "location",
+            "offset": 0,
+            "length": 5
+        },
+        {
+            "category": "issue_type",
+            "offset": 5,
+            "length": 2
+        }
+    ]
+},
+    {
+        "text": "一樓大廳的燈壞了，需要修理",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "location",
+                "offset": 0,
+                "length": 4
+            },
+            {
+                "category": "facility_type",
+                "offset": 5,
+                "length": 1
+            },
+            {
+                "category": "issue_type",
+                "offset": 6,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "公共走廊有異味",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "location",
+                "offset": 0,
+                "length": 4
+            },
+            {
+                "category": "issue_type",
+                "offset": 5,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "健身房的跑步機不能用了",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "location",
+                "offset": 0,
+                "length": 3
+            },
+            {
+                "category": "facility_type",
+                "offset": 4,
+                "length": 3
+            },
+            {
+                "category": "issue_type",
+                "offset": 7,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "游泳池水質渾濁需要處理",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "facility_type",
+                "offset": 0,
+                "length": 3
+            },
+            {
+                "category": "issue_type",
+                "offset": 3,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "B座2樓的飲水機出水量很小",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "location",
+                "offset": 0,
+                "length": 5
+            },
+            {
+                "category": "facility_type",
+                "offset": 6,
+                "length": 3
+            },
+            {
+                "category": "issue_type",
+                "offset": 9,
+                "length": 5
+            }
+        ]
+    },
+    {
+        "text": "後門的門禁卡感應器失靈了",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "location",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "facility_type",
+                "offset": 3,
+                "length": 7
+            },
+            {
+                "category": "issue_type",
+                "offset": 10,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "中庭的噴水池不運作了",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "location",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "facility_type",
+                "offset": 3,
+                "length": 3
+            },
+            {
+                "category": "issue_type",
+                "offset": 6,
+                "length": 4
+            }
+        ]
+    },
+    {
+        "text": "社區大門入口攝影機故障",
+        "language": "zh-tw",
+        "intent": "maintenance",
+        "entities": [
+            {
+                "category": "location",
+                "offset": 0,
+                "length": 6
+            },
+            {
+                "category": "facility_type",
+                "offset": 6,
+                "length": 3
+            },
+            {
+                "category": "issue_type",
+                "offset": 9,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "我想查詢上週報修的電梯進度",
+        "language": "zh-tw",
+        "intent": "maintenance_status",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 4,
+                "length": 2
+            },
+            {
+                "category": "facility_type",
+                "offset": 8,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "B棟樓梯維修什麼時候會完成",
+        "language": "zh-tw",
+        "intent": "maintenance_status",
+        "entities": [
+            {
+                "category": "location",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "facility_type",
+                "offset": 2,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "我前天報的停車場漏水問題處理了嗎",
+        "language": "zh-tw",
+        "intent": "maintenance_status",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 1,
+                "length": 2
+            },
+            {
+                "category": "location",
+                "offset": 5,
+                "length": 3
+            },
+            {
+                "category": "issue_type",
+                "offset": 8,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "健身房設備維修的進度如何",
+        "language": "zh-tw",
+        "intent": "maintenance_status",
+        "entities": [
+            {
+                "category": "location",
+                "offset": 0,
+                "length": 3
+            },
+            {
+                "category": "facility_type",
+                "offset": 3,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "大廳燈具的維修進度",
+        "language": "zh-tw",
+        "intent": "maintenance_status",
+        "entities": [
+            {
+                "category": "location",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "facility_type",
+                "offset": 2,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "我想知道游泳池過濾系統的修繕狀況",
+        "language": "zh-tw",
+        "intent": "maintenance_status",
+        "entities": [
+            {
+                "category": "facility_type",
+                "offset": 4,
+                "length": 7
+            }
+        ]
+    },
+    {
+        "text": "什麼時候會修好A座的電梯",
+        "language": "zh-tw",
+        "intent": "maintenance_status",
+        "entities": [
+            {
+                "category": "location",
+                "offset": 7,
+                "length": 2
+            },
+            {
+                "category": "facility_type",
+                "offset": 10,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "請問公共區域的監視器何時能修好",
+        "language": "zh-tw",
+        "intent": "maintenance_status",
+        "entities": [
+            {
+                "category": "location",
+                "offset": 2,
+                "length": 4
+            },
+            {
+                "category": "facility_type",
+                "offset": 7,
+                "length": 3
+            }
+        ]
+    },
+    {
+        "text": "社區門口的對講機修理進度",
+        "language": "zh-tw",
+        "intent": "maintenance_status",
+        "entities": [
+            {
+                "category": "location",
+                "offset": 0,
+                "length": 4
+            },
+            {
+                "category": "facility_type",
+                "offset": 5,
+                "length": 3
+            }
+        ]
+    },
+    {
+        "text": "報修的設備大概幾天能修好",
+        "language": "zh-tw",
+        "intent": "maintenance_status",
+        "entities": [
+            {
+                "category": "facility_type",
+                "offset": 3,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "最新的社區公告是什麼",
+        "language": "zh-tw",
+        "intent": "announcement",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "有關停電的通知在哪裡查看",
+        "language": "zh-tw",
+        "intent": "announcement",
+        "entities": []
+    },
+    {
+        "text": "本月有什麼社區活動嗎",
+        "language": "zh-tw",
+        "intent": "announcement",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "想看一下最近的公告",
+        "language": "zh-tw",
+        "intent": "announcement",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 5,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "社區最近有什麼通知",
+        "language": "zh-tw",
+        "intent": "announcement",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 2,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "昨天發布的公告內容是什麼",
+        "language": "zh-tw",
+        "intent": "announcement",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "我想查詢社區最新公告",
+        "language": "zh-tw",
+        "intent": "announcement",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 6,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "如何查看社區大樓的公告",
+        "language": "zh-tw",
+        "intent": "announcement",
+        "entities": []
+    },
+    {
+        "text": "這週有什麼重要通知嗎",
+        "language": "zh-tw",
+        "intent": "announcement",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "公告欄最新內容",
+        "language": "zh-tw",
+        "intent": "announcement",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 3,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "近期有沒有設備檢修的通知",
+        "language": "zh-tw",
+        "intent": "announcement",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 2
+            },
+            {
+                "category": "facility_type",
+                "offset": 5,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "管理員最近發了什麼通知",
+        "language": "zh-tw",
+        "intent": "announcement",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 3,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "我要怎麼繳管理費",
+        "language": "zh-tw",
+        "intent": "payment",
+        "entities": []
+    },
+    {
+        "text": "停車費在哪裡交",
+        "language": "zh-tw",
+        "intent": "payment",
+        "entities": []
+    },
+    {
+        "text": "我想查詢本月的水電費",
+        "language": "zh-tw",
+        "intent": "payment",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 4,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "繳費截止日期是什麼時候",
+        "language": "zh-tw",
+        "intent": "payment",
+        "entities": []
+    },
+    {
+        "text": "如何線上繳交管理費",
+        "language": "zh-tw",
+        "intent": "payment",
+        "entities": []
+    },
+    {
+        "text": "這個月的費用帳單在哪查看",
+        "language": "zh-tw",
+        "intent": "payment",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 3
+            }
+        ]
+    },
+    {
+        "text": "可以刷卡繳費嗎",
+        "language": "zh-tw",
+        "intent": "payment",
+        "entities": []
+    },
+    {
+        "text": "我想了解一下社區費用的明細",
+        "language": "zh-tw",
+        "intent": "payment",
+        "entities": []
+    },
+    {
+        "text": "繳費有什麼優惠方案嗎",
+        "language": "zh-tw",
+        "intent": "payment",
+        "entities": []
+    },
+    {
+        "text": "繳費收據如何取得",
+        "language": "zh-tw",
+        "intent": "payment",
+        "entities": []
+    },
+    {
+        "text": "請問逾期繳費會有什麼後果",
+        "language": "zh-tw",
+        "intent": "payment",
+        "entities": []
+    },
+    {
+        "text": "可以幫我查一下繳費紀錄嗎",
+        "language": "zh-tw",
+        "intent": "payment",
+        "entities": []
+    },
+    {
+        "text": "週邊有什麼餐廳優惠",
+        "language": "zh-tw",
+        "intent": "nearby_discount",
+        "entities": []
+    },
+    {
+        "text": "附近商店有什麼折扣活動",
+        "language": "zh-tw",
+        "intent": "nearby_discount",
+        "entities": []
+    },
+    {
+        "text": "這個月有哪些合作店家的優惠",
+        "language": "zh-tw",
+        "intent": "nearby_discount",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 3
+            }
+        ]
+    },
+    {
+        "text": "社區有什麼特約商店",
+        "language": "zh-tw",
+        "intent": "nearby_discount",
+        "entities": []
+    },
+    {
+        "text": "附近有哪些餐廳提供優惠",
+        "language": "zh-tw",
+        "intent": "nearby_discount",
+        "entities": []
+    },
+    {
+        "text": "社區住戶有什麼專屬優惠",
+        "language": "zh-tw",
+        "intent": "nearby_discount",
+        "entities": []
+    },
+    {
+        "text": "最近的商家折扣有哪些",
+        "language": "zh-tw",
+        "intent": "nearby_discount",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "有沒有健身房的優惠",
+        "language": "zh-tw",
+        "intent": "nearby_discount",
+        "entities": []
+    },
+    {
+        "text": "社區周邊有什麼好康",
+        "language": "zh-tw",
+        "intent": "nearby_discount",
+        "entities": []
+    },
+    {
+        "text": "哪些店家對社區居民有特別優惠",
+        "language": "zh-tw",
+        "intent": "nearby_discount",
+        "entities": []
+    },
+    {
+        "text": "現在有什麼促銷活動",
+        "language": "zh-tw",
+        "intent": "nearby_discount",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "週邊商店的優惠資訊在哪裡看",
+        "language": "zh-tw",
+        "intent": "nearby_discount",
+        "entities": []
+    },
+    {
+        "text": "你能幫我做什麼",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": []
+    },
+    {
+        "text": "這個機器人有什麼功能",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": []
+    },
+    {
+        "text": "我需要協助",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": []
+    },
+    {
+        "text": "請問怎麼使用這個系統",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": []
+    },
+    {
+        "text": "有什麼服務可以使用",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": []
+    },
+    {
+        "text": "這個APP怎麼操作",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": []
+    },
+    {
+        "text": "我不知道該怎麼使用這個功能",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": []
+    },
+    {
+        "text": "可以介紹一下你的功能嗎",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": []
+    },
+    {
+        "text": "我該如何使用社區服務",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": []
+    },
+    {
+        "text": "系統提供哪些功能",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": []
+    },
+    {
+        "text": "請問有使用手冊嗎",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": []
+    },
+    {
+        "text": "我不太清楚怎麼操作",
+        "language": "zh-tw",
+        "intent": "help",
+        "entities": []
+    },
+    {
+        "text": "你好",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": []
+    },
+    {
+        "text": "早安",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "嗨，在嗎？",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": []
+    },
+    {
+        "text": "午安",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "晚上好",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 0,
+                "length": 3
+            }
+        ]
+    },
+    {
+        "text": "嘿，你好啊",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": []
+    },
+    {
+        "text": "哈囉，最近好嗎",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": [
+            {
+                "category": "time_reference",
+                "offset": 3,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "text": "您好，請問有人在嗎",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": []
+    },
+    {
+        "text": "嗨，我需要問一些問題",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": []
+    },
+    {
+        "text": "在嗎？我想詢問一下",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": []
+    },
+    {
+        "text": "hey，可以聊聊嗎",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": []
+    },
+    {
+        "text": "問個好",
+        "language": "zh-tw",
+        "intent": "greeting",
+        "entities": []
+    }
+]
