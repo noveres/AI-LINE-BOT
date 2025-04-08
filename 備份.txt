@@ -293,8 +293,10 @@ def analyze_text(text):
         # 根據意圖提供對應的回覆 - 意圖和回應映射表
         intent_mapping = {
             "visitor_registration": {  # 訪客登記意圖
-                "text": "您似乎想了解訪客登記的相關資訊，請點擊下方選單進行訪客登記。",
-                "command": "訪客登記"
+                "text": "您似乎想了解訪客登記的相關資訊，請點擊下方連結進行訪客登記。",
+                "command": "訪客登記",
+                "url": "https://noveres.github.io/fgbd",
+                "image_url": request.url_root + 'static/FK.jpg'
             },
             "maintenance": {  # 公共維修意圖
                 "text": "您需要報修公共設施嗎？請點擊下方填寫維修表單。",
@@ -303,22 +305,28 @@ def analyze_text(text):
                 "image_url": request.url_root + 'static/WS.png'
             },
             "maintenance_status": {  # 維修進度查詢意圖
-                "text": "您想查詢維修進度，請點擊下方選單查看。",
-                "command": "維修進度查看"
+                "text": "您想查詢維修進度，請點擊下方連結查看。",
+                "command": "維修進度查看",
+                "url": "https://www.google.com",
+                "image_url": request.url_root + 'static/CK.png'
             },
             "announcement": {  # 公告查詢意圖
-                "text": "您可以通過下方選單查詢最新的公告資訊。",
-                "command": "公告查詢"
+                "text": "您可以通過以下連結查詢最新的公告：",
+                "command": "公告查詢",
+                "url": "https://www.google.com",
+                "image_url": request.url_root + 'static/GK.png'
             },
             "payment": {  # 繳費相關意圖
-                "text": "您可以使用下方選單快速繳費。",
+                "text": "您可以使用以下快速繳費通道：",
                 "command": "快速繳費通道",
-                # "image_url": request.url_root + 'static/qr.png',
-                # "url": "https://www.google.com"  # 改為有效的URL
+                "url": "https://www.google.com",
+                "image_url": request.url_root + 'static/GK.png'  # 使用公告圖片作為預設，您可以更換為特定繳費圖片
             },
             "nearby_discount": {  # 週邊優惠意圖
-                "text": "您可以使用下方選單查看週邊店家的合作折扣信息。",
-                "command": "週邊店家的合作折扣"
+                "text": "您可以使用以下來買好貨查看週邊店家的合作折扣信息。",
+                "command": "週邊店家的合作折扣",
+                "url": "https://www.google.com",
+                "image_url": request.url_root + 'static/01.png'
             },
             "help": {  # 幫助意圖
                 "text": "您好！我是社區服務機器人，可以幫您處理訪客登記、公共維修、查詢公告、繳費以及提供周邊優惠信息。請告訴我您需要什麼幫助？",
@@ -350,33 +358,33 @@ def analyze_text(text):
         if top_intent in intent_mapping and confidence >= 0.6:
             response = intent_mapping[top_intent]["text"]
             command = intent_mapping[top_intent]["command"]
+            url = intent_mapping[top_intent].get("url", None)
+            image_url = intent_mapping[top_intent].get("image_url", None)
             
             # 如果有實體且是維修意圖，可以生成更個性化的回應
             if entities:
-                if top_intent == "maintenance":
-                    # 檢查是否為私人請求
-                    if "user_concern" in entities:
-                        user_concern = entities["user_concern"]
-                        greeting = "您好！"
-                        response = f"{greeting}{_handle_private_request(user_concern)}"
-                        # 為私人請求設置一個特殊命令，而不是None
-                        command = "私人維修"
+                # 處理維修意圖中的各種實體
+                if top_intent == "maintenance" and "user_concern" in entities:
+                    concern = entities["user_concern"]
+                    if "私" in concern or "家" in concern:
+                        response = f"您好，對於{concern}等私人物業維修，我們建議您直接聯繫專業維修公司。是否需要我們提供相關推薦？"
+                        command = None
                     else:
-                        response = process_maintenance_entities(entities)
-                elif top_intent == "greeting":
-                    response = process_greeting_entities(entities)
+                        response = f"您好，我們已收到您關於{concern}的公共維修請求。請點擊下方連結填寫詳細信息，我們會盡快處理。"
+                
+                # 處理基於實體的幫助意圖個性化回應
                 elif top_intent == "help":
                     response = process_help_entities(entities)
             
-            return result, response, command if command else None
+            return result, response, command if command else None, url, image_url
         
         # 如果信心度不夠或沒有匹配的意圖，提供通用回覆
-        return result, "抱歉，我不確定您想要什麼信息。您可以嘗試使用下方的選單，或更清楚地描述您的需求，例如「訪客登記」、「公共維修」或「查詢公告」等。", None
+        return result, "抱歉，我不確定您想要什麼信息。您可以嘗試使用下方的選單，或更清楚地描述您的需求，例如「訪客登記」、「公共維修」或「查詢公告」等。", None, None, None
     
     except Exception as e:
         # 記錄錯誤並返回友好提示
         print(f"Azure AI Language 服務出錯: {str(e)}")
-        return {"error": str(e)}, "抱歉，AI服務暫時遇到問題。請嘗試使用選單選項，或稍後再試。", None
+        return {"error": str(e)}, "抱歉，AI服務暫時遇到問題。請嘗試使用選單選項，或稍後再試。", None, None, None
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -486,7 +494,7 @@ def handle_message(event):
                 title='維修進度查看',
                 text='快速查看公共維修的進度，避免錯過重要的維修事件。',
                 actions=[
-                    URIAction(label='連結', uri='https://noveres.github.io/fgbd/progress'),
+                    URIAction(label='連結', uri='https://www.google.com'),
                 ]
             )
             template_message = TemplateMessage(
@@ -508,7 +516,7 @@ def handle_message(event):
                 title='公告查詢',
                 text='快速查詢最新公告，避免錯過重要的活動。',
                 actions=[
-                    URIAction(label='連結', uri='https://noveres.github.io/fgbd/announcements'),
+                    URIAction(label='連結', uri='https://www.google.com'),
                 ]
             )
             template_message = TemplateMessage(
@@ -672,7 +680,7 @@ def handle_message(event):
             # 使用 Azure AI Language 服務分析用戶意圖
             try:
                 # 調用 analyze_text 函數分析用戶輸入
-                result, response_text, command = analyze_text(user_text)
+                result, response_text, command, url, image_url = analyze_text(user_text)
                 
                 print(f"分析結果: 意圖={result.get('result', {}).get('prediction', {}).get('topIntent', '未知')}")
                 print(f"回應內容: {response_text}")
@@ -680,106 +688,29 @@ def handle_message(event):
                 # 判斷是否返回了有效命令
                 valid_commands = ['訪客登記', '公共維修填報', '維修進度查看', '公告查詢', '快速繳費通道', '週邊店家的合作折扣']
                 
-                # 獲取意圖名稱，用於檢查是否有URL
-                intent = result.get('result', {}).get('prediction', {}).get('topIntent', '')
-                
-                # 獲取意圖映射
-                intent_mapping = {
-                    "visitor_registration": {  # 訪客登記意圖
-                        "text": "您似乎想了解訪客登記的相關資訊，請點擊下方選單進行訪客登記。",
-                        "command": "訪客登記"
-                    },
-                    "maintenance": {  # 公共維修意圖
-                        "text": "您需要報修公共設施嗎？請點擊下方填寫維修表單。",
-                        "command": "公共維修填報",
-                        "url": "https://noveres.github.io/fgbd/maintenance",
-                        "image_url": request.url_root + 'static/WS.png'
-                    },
-                    "maintenance_status": {  # 維修進度查詢意圖
-                        "text": "您想查詢維修進度，請點擊下方選單查看。",
-                        "command": "維修進度查看"
-                    },
-                    "announcement": {  # 公告查詢意圖
-                        "text": "您可以通過下方選單查詢最新的公告",
-                        "command": "公告查詢"
-                    },
-                    "payment": {  # 繳費相關意圖
-                        "text": "您可以使用下方選單快速繳費",
-                        "command": "快速繳費通道",
-                        # "image_url": request.url_root + 'static/qr.png',
-                        # "url": "https://www.google.com"  # 改為有效的URL
-                    },
-                    "nearby_discount": {  # 週邊優惠意圖
-                        "text": "您可以使用下方選單查看週邊店家的合作折扣信息",
-                        "command": "週邊店家的合作折扣"
-                    },
-                    "help": {  # 幫助意圖
-                        "text": "您好！我是社區服務機器人，可以幫您處理訪客登記、公共維修、查詢公告、繳費以及提供周邊優惠信息。請告訴我您需要什麼幫助？",
-                        "command": None
-                    },
-                    "greeting": {  # 問候意圖
-                        "text": "您好！有什麼我可以幫您的嗎？您可以詢問有關訪客登記、公共維修、公告查詢等服務。",
-                        "command": None
-                    }
-                }
-                
-                # 特殊處理：如果命令是"私人維修"，添加物業管理處連絡信息
-                if command == "私人維修":
-                    # 可以為私人維修請求添加物業管理處的聯繫方式
+                # 檢查是否有直接從意圖映射中提供的URL
+                if url:
+                    # 如果有指定的URL，創建按鈕模板
+                    # 移除文本中的URL部分
+                    import re
+                    url_pattern = r'https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+'
+                    clean_text = re.sub(url_pattern, '', response_text).strip()
+                    
+                    # 處理圖片URL 
+                    image = image_url
+                    if image:
+                        image = image.replace("http", "https")
+                        app.logger.info("image_url=" + image)
+                    
+                    # 創建按鈕模板
                     buttons_template = ButtonsTemplate(
-                        title='物業管理處聯繫方式',
-                        text=response_text,
+                        thumbnail_image_url=image,
+                        title=command if command else '查看連結',
+                        text=clean_text,
                         actions=[
-                            URIAction(label='撥打電話', uri='tel:079638706')
+                            URIAction(label='點擊這裡', uri=url)
                         ]
                     )
-                    template_message = TemplateMessage(
-                        alt_text='物業管理處聯繫方式',
-                        template=buttons_template
-                    )
-                    line_bot_api.reply_message(
-                        ReplyMessageRequest(
-                            reply_token=event.reply_token,
-                            messages=[template_message]
-                        )
-                    )
-                    return
-                
-                # 檢查該意圖是否有URL
-                has_url = False
-                url = None
-                image_url = None
-                
-                if intent in intent_mapping:
-                    if "url" in intent_mapping[intent]:
-                        has_url = True
-                        url = intent_mapping[intent]["url"]
-                    if "image_url" in intent_mapping[intent]:
-                        image_url = intent_mapping[intent]["image_url"]
-                
-                # 如果意圖有URL
-                if has_url and url:
-                    # 如果有圖片URL，使用帶圖片的按鈕模板
-                    if image_url:
-                        image_url = image_url.replace("http", "https")
-                        buttons_template = ButtonsTemplate(
-                            thumbnail_image_url=image_url,
-                            title=command if command else '查看連結',
-                            text=response_text,
-                            actions=[
-                                URIAction(label='點擊這裡', uri=url)
-                            ]
-                        )
-                    else:
-                        # 沒有圖片，使用普通按鈕模板
-                        buttons_template = ButtonsTemplate(
-                            title=command if command else '查看連結',
-                            text=response_text,
-                            actions=[
-                                URIAction(label='點擊這裡', uri=url)
-                            ]
-                        )
-                    
                     template_message = TemplateMessage(
                         alt_text=command if command else '查看連結',
                         template=buttons_template
@@ -790,14 +721,90 @@ def handle_message(event):
                             messages=[template_message]
                         )
                     )
-                else:
-                    # 沒有URL，直接返回文字回應
-                    line_bot_api.reply_message(
-                        ReplyMessageRequest(
-                            reply_token=event.reply_token,
-                            messages=[TextMessage(text=response_text)]
+                    return
+                
+                # 如果未直接提供URL但有URL格式，繼續使用正則表達式檢查
+                url_pattern = r'https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+'
+                urls = re.findall(url_pattern, response_text)
+                
+                # 如果有返回命令且是有效命令
+                if command and command in valid_commands:
+                    # 檢查回應文字中是否包含URL
+                    if urls:
+                        url = urls[0]  # 取第一個URL
+                        # 移除文本中的URL
+                        clean_text = re.sub(url_pattern, '', response_text).strip()
+                        # 創建按鈕模板
+                        buttons_template = ButtonsTemplate(
+                            title=command,
+                            text=clean_text,
+                            actions=[
+                                URIAction(label='點擊這裡', uri=url)
+                            ]
                         )
-                    )
+                        template_message = TemplateMessage(
+                            alt_text=command,
+                            template=buttons_template
+                        )
+                        line_bot_api.reply_message(
+                            ReplyMessageRequest(
+                                reply_token=event.reply_token,
+                                messages=[template_message]
+                            )
+                        )
+                    else:
+                        # 分步處理策略：
+                        # 1. 先發送回應說明，解釋我們理解了用戶意圖
+                        line_bot_api.reply_message(
+                            ReplyMessageRequest(
+                                reply_token=event.reply_token,
+                                messages=[TextMessage(text=response_text)]
+                            )
+                        )
+                    
+                    # 2. 這裡可以添加觸發實際功能的代碼
+                    # 注意：LINE Bot API 不支持直接模擬用戶發送命令
+                    # 在實際應用中，您有以下選擇：
+                    # a) 創建一個單獨的函數來處理各種命令並返回適當的回應
+                    # b) 在這裡直接複製對應命令處理的代碼邏輯
+                    # c) 在用戶下一次互動時記住上下文，提供引導式體驗
+                    
+                    # 未來自動化擴展建議：實現一個通用的命令處理器
+                    # def handle_command(command, user_id):
+                    #     # 根據命令執行相應的功能
+                    #     # 返回適當的回應
+                else:
+                    # 如果沒有有效命令，檢查回應文字中是否包含URL
+                    if urls:
+                        url = urls[0]  # 取第一個URL
+                        # 移除文本中的URL
+                        clean_text = re.sub(url_pattern, '', response_text).strip()
+                        # 創建按鈕模板
+                        buttons_template = ButtonsTemplate(
+                            title='查看連結',
+                            text=clean_text,
+                            actions=[
+                                URIAction(label='點擊這裡', uri=url)
+                            ]
+                        )
+                        template_message = TemplateMessage(
+                            alt_text='查看連結',
+                            template=buttons_template
+                        )
+                        line_bot_api.reply_message(
+                            ReplyMessageRequest(
+                                reply_token=event.reply_token,
+                                messages=[template_message]
+                            )
+                        )
+                    else:
+                        # 直接回傳 AI 的回應
+                        line_bot_api.reply_message(
+                            ReplyMessageRequest(
+                                reply_token=event.reply_token,
+                                messages=[TextMessage(text=response_text)]
+                            )
+                        )
             except Exception as e:
                 # 出錯時返回友好的錯誤信息，並記錄詳細錯誤便於調試
                 app.logger.error(f"處理用戶訊息時出錯: {str(e)}")
