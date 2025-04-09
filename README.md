@@ -139,7 +139,7 @@ AZURE_LANGUAGE_KEY = 'your-azure-language-key'
 
 ### 本地開發環境設置
 
-1. 安裝Python（建議3.8或更高版本）
+1. 安裝Python（建議3.13或更高版本）
 
    - 從[Python官網](https://www.python.org/downloads/)下載並安裝Python
    - 確保將Python添加到PATH環境變數中
