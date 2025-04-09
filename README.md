@@ -19,8 +19,8 @@
 ## 教學資源
 這份專案參考了以下教學資源：
 
-
 - [LINE Developers官方文檔](https://developers.line.biz/en/docs/messaging-api/line-bot-sdk/#official-sdks) - LINE Messaging API SDKs
+- [Python Package Index_LINE_Bot_SDK](https://pypi.org/project/line-bot-sdk/)
 - [大數據與人工智慧教學頻道](https://www.youtube.com/@bigdatantue) - 提供AI相關技術教學與實作指南，這個老師的教學非常詳細，推薦給有興趣的人學習，這個項目很多是基於他的內容。
 
 ## 技術架構
@@ -79,10 +79,25 @@ AZURE_LANGUAGE_KEY = 'your-azure-language-key'
    - 可以使用ngrok等工具在本地開發時創建臨時的公開URL
    - 點擊「Verify」按鈕測試Webhook連接是否成功
 4. 設置Rich Menu（選擇性）
-
+   方法一
+   
    - 在Rich Menu設定頁面，可以創建自定義的Rich Menu
    - 上傳Rich Menu圖片，設置區域和動作
    - 啟用Rich Menu並設為默認
+   - 需要先針對選單進行一些基本設定，例如標題（僅後台管理用）、使用期間等。
+   - 接著設定圖文選單的版型，有多種版型可供選擇，例如六格的大型版型。
+   - 上傳一張作為整體背景的圖片
+     
+   方法二(本專案的方法)
+   
+   - 使用 MessengerAPIblob 這個類別來操作 Rich Menu 相關的功能
+   - 設定圖文選單的區域 (areas)，這是一個陣列，裡面要放入 RichMenuArea 物件。
+   - 每一個 RichMenuArea 物件需要設定 bounds（使用 RichMenuBounds 物件給定 XY 座標、寬度和高度）以及 action（點擊這個區域後要觸發的動作）
+   - 要建立一個 RichMenuRequest 物件，這個物件需要設定 Rich Menu 的大小 (size，使用 RichMenuSize 物件設定寬度和高度)、預設是否顯示 (selected，設定 true 為顯示，false 為隱藏)、名稱 (name，僅後台管理用)、選單下方顯示的文字 (chatBarText)，以及剛剛設定(areas)◦
+   - 建立 RichMenuRequest 物件後，您可以使用 line_bot_api.create_rich_menu() 這個方法來建立 Rich Menu，並取得這次建立的 Rich Menu ID。
+   - 設定 Rich Menu 的圖片。使用 with open(...) as f: 的方式讀取您的圖片檔案，
+   - 使用 line_bot_api_blob.set_rich_menu_image(rich_menu_id, content_type='image/jpeg', body=f) 這個方法來設定圖片。請注意 content_type 需要根據您的圖片格式進行設定。
+   - 您需要設定預設 Rich Menu，可以使用 line_bot_api.set_default_rich_menu(rich_menu_id) 這個方法，將您剛剛建立的 Rich Menu ID 設定為預設。
 
 ### Azure AI Language設置
 
