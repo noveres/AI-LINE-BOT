@@ -20,7 +20,7 @@
 這份專案參考了以下教學資源：
 
 - [LINE Developers官方文檔](https://developers.line.biz/en/docs/messaging-api/line-bot-sdk/#official-sdks) - LINE Messaging API SDKs
-- [Python Package Index_LINE_Bot_SDK](https://pypi.org/project/line-bot-sdk/)
+- [Python Package Index_LINE_Bot_SDK](https://pypi.org/project/line-bot-sdk/)- LINE Messaging API SDKs 的 Python 套件倉庫
 - [大數據與人工智慧教學頻道](https://www.youtube.com/@bigdatantue) - 提供AI相關技術教學與實作指南，這個老師的教學非常詳細，推薦給有興趣的人學習，這個項目很多是基於他的內容。
 
 ## 技術架構
