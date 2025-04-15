@@ -378,23 +378,26 @@ def analyze_text(text):
         print(f"Azure AI Language 服務出錯: {str(e)}")
         return {"error": str(e)}, "抱歉，AI服務暫時遇到問題。請嘗試使用選單選項，或稍後再試。", None
 
+import threading
+
 @app.route("/callback", methods=['POST'])
 def callback():
-    # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
-
-    # get request body as text
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
 
-    # handle webhook body
-    try:
-        handler.handle(body, signature)
-    except InvalidSignatureError:
-        app.logger.info("Invalid signature. Please check your channel access token/channel secret.")
-        abort(400)
+    def async_handle():
+        try:
+            handler.handle(body, signature)
+        except InvalidSignatureError:
+            app.logger.info("Invalid signature.")
+            # 不 abort，讓主流程繼續返回 200
 
-    return 'OK'
+    # 新開一條線程處理
+    threading.Thread(target=async_handle).start()
+
+    # LINE 需要快速收到 200 OK，不然會報 timeout
+    return 'OK', 200
 
     
 @handler.add(MessageEvent, message=TextMessageContent)
