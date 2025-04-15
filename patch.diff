@@ -1,0 +1,28 @@
+From 58ea5682bf2e831df6c16e0218a94bae7df4f8e5 Mon Sep 17 00:00:00 2001
+From: noveres <andrew901117@gmail.com>
+Date: Wed, 16 Apr 2025 06:04:14 +0800
+Subject: [PATCH] =?UTF-8?q?=E5=88=AA=E9=99=A4=E6=95=8F=E6=84=9F=E8=B3=87?=
+ =?UTF-8?q?=E8=A8=8A?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .env | 4 ----
+ 1 file changed, 4 deletions(-)
+ delete mode 100644 .env
+
+diff --git a/.env b/.env
+deleted file mode 100644
+index 5acebce..0000000
+--- a/.env
++++ /dev/null
+@@ -1,4 +0,0 @@
+-CHANNEL_ACCESS_TOKEN = '87c0KHHgqJone/4LjtdRsg64+cbgjwCXTdKwvpzDMD2+OttIrhylZbO/n/fegjdA23Idmnw3qmQPjeLtQqyENLDPCtfJil1Z33XA/W1eUi1FZBfPfGy/nLBUFM3tg1sG3YPybhuHI53h0CLtjnOyIgdB04t89/1O/w1cDnyilFU='
+-CHANNEL_SECRET='21ea6980ef605cc17da34964e6f5366e'
+-AZURE_LANGUAGE_ENDPOINT='https://azure-line.cognitiveservices.azure.com/'
+-AZURE_LANGUAGE_KEY='7tQ7io2WFw3LVndhS9u1ySOrBeore4wUmNyxiCFm9j4jMKkgtd19JQQJ99BCACYeBjFXJ3w3AAAaACOGgppF'
+\ No newline at end of file
+-- 
+2.30.2.windows.1
+
