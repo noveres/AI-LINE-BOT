@@ -924,5 +924,5 @@ def create_rich_menu_2():
 
 create_rich_menu_2()
 
-if __name__ == "__main__":
-    app.run()
+# if __name__ == "__main__":
+#     app.run()
