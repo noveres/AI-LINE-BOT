@@ -16,28 +16,46 @@ from linebot.v3.messaging import (
     ButtonsTemplate,
     PostbackAction,
     TemplateMessage,
+    MulticastRequest,
     StickerMessage,  
     ImageMessage,     
     VideoMessage,     
     AudioMessage,     
     LocationMessage,  
     Emoji,
+    CameraAction,
+    FlexMessage,  
     TemplateMessage,
+    ConfirmTemplate,
     ButtonsTemplate,
     CarouselTemplate,
     CarouselColumn,
+    ImageCarouselTemplate,
+    ImageCarouselColumn,
     URIAction,
+    RichMenuArea, RichMenuBounds, RichMenuSize, RichMenuRequest, MessageAction,
         Configuration,
     ApiClient,
     MessagingApi,
     ReplyMessageRequest,
     TemplateMessage,
+    ConfirmTemplate,
     ButtonsTemplate,
     CarouselTemplate,
     CarouselColumn,
+    ImageCarouselTemplate,
+    ImageCarouselColumn,
+    MessageAction,
     URIAction,
     PostbackAction,
+    DatetimePickerAction,
+    CameraAction,
+    CameraRollAction,
+    LocationAction,
+            
 
+  
+  
 )
 from linebot.v3.webhooks import (
     MessageEvent,
@@ -359,37 +377,26 @@ def analyze_text(text):
         # 記錄錯誤並返回友好提示
         print(f"Azure AI Language 服務出錯: {str(e)}")
         return {"error": str(e)}, "抱歉，AI服務暫時遇到問題。請嘗試使用選單選項，或稍後再試。", None
-    
-import threading
-from flask import Flask, request, abort
 
 @app.route("/callback", methods=['POST'])
 def callback():
+    # get X-Line-Signature header value
+    signature = request.headers['X-Line-Signature']
+
+    # get request body as text
+    body = request.get_data(as_text=True)
+    app.logger.info("Request body: " + body)
+
+    # handle webhook body
     try:
-        signature = request.headers.get('X-Line-Signature', '')
+        handler.handle(body, signature)
+    except InvalidSignatureError:
+        app.logger.info("Invalid signature. Please check your channel access token/channel secret.")
+        abort(400)
 
-        # get request body as text
-        body = request.get_data(as_text=True)
-        app.logger.info("Request body: " + body)
+    return 'OK'
 
-        # 使用 thread 非同步處理，主線立刻回 200
-        def process_webhook():
-            try:
-                handler.handle(body, signature)
-            except InvalidSignatureError:
-                app.logger.warning("Invalid signature.")
-            except Exception as e:
-                app.logger.error(f"Webhook handler exception: {str(e)}")
-
-        threading.Thread(target=process_webhook).start()
-
-        # 馬上回應 LINE，避免超時
-        return 'OK', 200
-
-    except Exception as e:
-        app.logger.error(f"Callback top-level error: {str(e)}")
-        return 'Internal Server Error', 500
-
+    
 @handler.add(MessageEvent, message=TextMessageContent)
 def handle_message(event):
     with ApiClient(configuration) as api_client:
