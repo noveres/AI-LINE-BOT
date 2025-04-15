@@ -16,42 +16,34 @@ from linebot.v3.messaging import (
     ButtonsTemplate,
     PostbackAction,
     TemplateMessage,
-    MulticastRequest,
     StickerMessage,  
     ImageMessage,     
     VideoMessage,     
     AudioMessage,     
     LocationMessage,  
     Emoji,
-    CameraAction,
-    FlexMessage,  
+  
     TemplateMessage,
-    ConfirmTemplate,
+  
     ButtonsTemplate,
     CarouselTemplate,
     CarouselColumn,
-    ImageCarouselTemplate,
-    ImageCarouselColumn,
+
     URIAction,
-    RichMenuArea, RichMenuBounds, RichMenuSize, RichMenuRequest, MessageAction,
+
         Configuration,
     ApiClient,
     MessagingApi,
     ReplyMessageRequest,
     TemplateMessage,
-    ConfirmTemplate,
+  
     ButtonsTemplate,
     CarouselTemplate,
     CarouselColumn,
-    ImageCarouselTemplate,
-    ImageCarouselColumn,
-    MessageAction,
+
     URIAction,
     PostbackAction,
-    DatetimePickerAction,
-    CameraAction,
-    CameraRollAction,
-    LocationAction,
+
             
 
   
@@ -60,7 +52,6 @@ from linebot.v3.messaging import (
 from linebot.v3.webhooks import (
     MessageEvent,
     TextMessageContent,
-    FollowEvent,
     PostbackEvent,
     )
 from datetime import datetime
