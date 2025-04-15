@@ -394,7 +394,7 @@ def callback():
         app.logger.info("Invalid signature. Please check your channel access token/channel secret.")
         abort(400)
 
-    return 'OK'
+    return 'OK',200
 
     
 @handler.add(MessageEvent, message=TextMessageContent)
@@ -925,4 +925,4 @@ def create_rich_menu_2():
 create_rich_menu_2()
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
