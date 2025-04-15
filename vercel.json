@@ -4,6 +4,7 @@
         {
             "src": "api/app.py",
             "use": "@vercel/python"
+            
         }
     ],
     "routes": [
@@ -12,5 +13,12 @@
           "dest": "api/app.py",
           "methods": ["GET", "POST"]
         }
-    ]
+    ],
+    
+        "functions": {
+          "api/app.py": {
+            "maxDuration": 10
+          }
+        }
+      
 }
