@@ -377,29 +377,37 @@ def analyze_text(text):
         # 記錄錯誤並返回友好提示
         print(f"Azure AI Language 服務出錯: {str(e)}")
         return {"error": str(e)}, "抱歉，AI服務暫時遇到問題。請嘗試使用選單選項，或稍後再試。", None
-
+    
 import threading
+from flask import Flask, request, abort
 
 @app.route("/callback", methods=['POST'])
 def callback():
-    signature = request.headers['X-Line-Signature']
-    body = request.get_data(as_text=True)
-    app.logger.info("Request body: " + body)
+    try:
+        signature = request.headers.get('X-Line-Signature', '')
 
-    def async_handle():
-        try:
-            handler.handle(body, signature)
-        except InvalidSignatureError:
-            app.logger.info("Invalid signature.")
-            # 不 abort，讓主流程繼續返回 200
+        # get request body as text
+        body = request.get_data(as_text=True)
+        app.logger.info("Request body: " + body)
 
-    # 新開一條線程處理
-    threading.Thread(target=async_handle).start()
+        # 使用 thread 非同步處理，主線立刻回 200
+        def process_webhook():
+            try:
+                handler.handle(body, signature)
+            except InvalidSignatureError:
+                app.logger.warning("Invalid signature.")
+            except Exception as e:
+                app.logger.error(f"Webhook handler exception: {str(e)}")
 
-    # LINE 需要快速收到 200 OK，不然會報 timeout
-    return 'OK', 200
+        threading.Thread(target=process_webhook).start()
 
-    
+        # 馬上回應 LINE，避免超時
+        return 'OK', 200
+
+    except Exception as e:
+        app.logger.error(f"Callback top-level error: {str(e)}")
+        return 'Internal Server Error', 500
+
 @handler.add(MessageEvent, message=TextMessageContent)
 def handle_message(event):
     with ApiClient(configuration) as api_client:
