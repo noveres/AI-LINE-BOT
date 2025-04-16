@@ -5,6 +5,7 @@
 ![alt text](static/物業管理LOGO.png)
 
 ## 🔗 試玩連結
+
 ### 🤖 使用 LINE 官方帳號掃描下方的 QR Code 加入 LINE 好友：
 
 ![LINE Bot QR Code](image/README/937udfiq.png)
@@ -16,9 +17,9 @@
 
 WuyeGuanli AI-LINE-BOT 為我們的協作專案 WuyeGuanli 物業管理系統的一部份：
 
-- 🖥️ [前台](https://github.com/chikenouo/Wuyeguanli-vue-?tab=readme-ov-file)
-- 🛠️ [後台](https://github.com/noveres/WuyeGuanli_NG)
-- 🗄️ [後端](https://github.com/chikenouo/WuyeGuanli)
+- [前台](https://github.com/chikenouo/Wuyeguanli-vue-?tab=readme-ov-file)
+- [後台](https://github.com/noveres/WuyeGuanli_NG)
+- [後端](https://github.com/chikenouo/WuyeGuanli)
 
 ## 📝 專案介紹
 
@@ -28,30 +29,30 @@ WuyeGuanli AI-LINE-BOT 為我們的協作專案 WuyeGuanli 物業管理系統的
 
 ![alt text](static/LINE-Bot.png)
 
-| 功能名稱     | 功能描述                                                                |
-| ------------ | ----------------------------------------------------------------------- |
-| 🤖 自然語言理解 | 整合 Azure AI Language 服務，能夠理解用戶的自然語言輸入，識別意圖和實體 |
-| 📝 訪客登記     | 提供線上訪客登記功能，減輕管理人員負擔                                  |
+| 功能名稱          | 功能描述                                                                |
+| ----------------- | ----------------------------------------------------------------------- |
+| 🤖 自然語言理解   | 整合 Azure AI Language 服務，能夠理解用戶的自然語言輸入，識別意圖和實體 |
+| 📝 訪客登記       | 提供線上訪客登記功能，減輕管理人員負擔                                  |
 | 🛠️ 公共維修申報 | 居民可以報告公共設施問題，系統會自動分類並處理                          |
-| 🔍 維修進度查詢 | 查詢已申報維修事項的處理進度                                            |
-| 📢 公告查詢     | 查看社區最新公告                                                        |
-| 💰 繳費相關     | 提供繳費通道和相關資訊                                                  |
+| 🔍 維修進度查詢   | 查詢已申報維修事項的處理進度                                            |
+| 📢 公告查詢       | 查看社區最新公告                                                        |
+| 💰 繳費相關       | 提供繳費通道和相關資訊                                                  |
 | 🏷️ 週邊優惠資訊 | 提供社區周邊商家的優惠資訊                                              |
 
 ## 📚 教學資源
 
 這份專案參考了以下教學資源：
 
-| 資源名稱                            | 資源連結                                                                           | 詳細描述                                                                                                 |
-| ----------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| 資源名稱                               | 資源連結                                                                           | 詳細描述                                                                                                 |
+| -------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | 📖 LINE Developers 官方文檔            | [連結](https://developers.line.biz/en/docs/messaging-api/line-bot-sdk/#official-sdks) | LINE Messaging API SDKs                                                                                  |
 | 🐍 Python Package Index - LINE Bot SDK | [連結](https://pypi.org/project/line-bot-sdk/)                                        | LINE Messaging API SDKs 的 Python 套件倉庫                                                               |
 | 🎓 大數據與人工智慧教學頻道            | [連結](https://www.youtube.com/@bigdatantue)                                          | 提供 AI 相關技術教學與實作指南，這個老師的教學非常詳細，推薦給有興趣的人學習，這個項目很多是基於他的內容 |
 
 ## 🏗️ 技術架構
 
-| 技術名稱     | 版本/描述                       |
-| ------------ | ------------------------------- |
+| 技術名稱        | 版本/描述                       |
+| --------------- | ------------------------------- |
 | 🐍 後端框架     | Flask                           |
 | 💬 LINE SDK     | line-bot-sdk 3.7                |
 | 🤖 AI 服務      | Azure AI Language Conversations |
@@ -110,7 +111,7 @@ AZURE_LANGUAGE_KEY = 'your-azure-language-key'
    - 需要先針對選單進行一些基本設定，例如標題（僅後台管理用）、使用期間等
    - 接著設定圖文選單的版型，有多種版型可供選擇，例如六格的大型版型
    - 上傳一張作為整體背景的圖片
-   **方法二（本專案的方法）**
+     **方法二（本專案的方法）**
    - 使用 MessengerAPIblob 這個類別來操作 Rich Menu 相關的功能
    - 設定圖文選單的區域 (areas)，這是一個陣列，裡面要放入 RichMenuArea 物件
    - 每一個 RichMenuArea 物件需要設定 bounds（使用 RichMenuBounds 物件給定 XY 座標、寬度和高度）以及 action（點擊這個區域後要觸發的動作）
@@ -140,8 +141,8 @@ AZURE_LANGUAGE_KEY = 'your-azure-language-key'
    - 添加實體：點擊「Entities」標籤，添加實體（如 facility_type）
    - 參考 `4.json` 中的訓練數據，添加對應的意圖和實體
    - 為每個意圖添加示例語句，並標記其中的實體
-   ![Azure Language Studio - 意圖設置](image/README/1744093208724.png)
-   ![Azure Language Studio - 實體設置](image/README/1744093189796.png)
+     ![Azure Language Studio - 意圖設置](image/README/1744093208724.png)
+     ![Azure Language Studio - 實體設置](image/README/1744093189796.png)
 4. 訓練並部署模型
    - 完成意圖和實體設置後，點擊「Train」按鈕
    - 訓練完成後，點擊「Deploy」按鈕
@@ -166,11 +167,11 @@ AZURE_LANGUAGE_KEY = 'your-azure-language-key'
    # 啟動虛擬環境
    activate
    ```
-   **虛擬環境使用說明**
-   - 啟動成功後，命令提示字元前會出現 (libot)
+
+   **虛擬環境使用說明**- 啟動成功後，命令提示字元前會出現 (libot)
    - 在虛擬環境中安裝的套件不會影響全域 Python 環境
    - 退出虛擬環境請使用 `deactivate` 命令
-   **常見問題解決**
+     **常見問題解決**
    - 如果無法執行 activate，請確認 Python 是否已加入 PATH
    - Windows 執行權限問題可使用：`Set-ExecutionPolicy RemoteSigned -Scope CurrentUser`
    - 建議每個專案使用獨立的虛擬環境，避免套件版本衝突
@@ -200,29 +201,30 @@ python app.py
 
 ### 🎯 意圖列表
 
-| 意圖名稱             | 描述         |
-| -------------------- | ------------ |
+| 意圖名稱                | 描述         |
+| ----------------------- | ------------ |
 | 📝 visitor_registration | 訪客登記相關 |
-| 🛠️ maintenance          | 公共維修相關 |
+| 🛠️ maintenance        | 公共維修相關 |
 | 🔍 maintenance_status   | 維修進度查詢 |
 | 📢 announcement         | 公告查詢     |
 | 💰 payment              | 繳費相關     |
-| 🏷️ nearby_discount      | 週邊優惠     |
+| 🏷️ nearby_discount    | 週邊優惠     |
 | 🆘 help                 | 幫助         |
 | 🙋 greeting             | 問候         |
 
 ### 🏷️ 實體列表
 
-| 實體名稱       | 描述                          |
-| -------------- | ----------------------------- |
+| 實體名稱          | 描述                          |
+| ----------------- | ----------------------------- |
 | 🏢 facility_type  | 設施類型（如電梯、燈具等）    |
 | 📍 location       | 位置（如 A 棟、地下停車場等） |
-| ⚠️ issue_type     | 問題類型（如故障、漏水等）    |
+| ⚠️ issue_type   | 問題類型（如故障、漏水等）    |
 | 🕒 time_reference | 時間參考（如今天、明天等）    |
 | 🆘 help_topic     | 幫助主題                      |
 | 👀 user_concern   | 用戶關注點                    |
 
 ## 🤝 貢獻指南
+
 使用上有任何困難或建議，歡迎[聯繫我](https://mail.google.com/mail/?view=cm&to=andrew901117@gmail.com)，我會盡可能地提供幫助或改善
 如果您有任何問題或建議，請在 GitHub 上創建一個 issue。如果您願意貢獻代碼，請 fork 這個專案，提交您的更改，然後創建一個 pull request。
 
