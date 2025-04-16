@@ -284,8 +284,10 @@ def analyze_text(text):
         # 根據意圖提供對應的回覆 - 意圖和回應映射表
         intent_mapping = {
             "visitor_registration": {  # 訪客登記意圖
-                "text": "您似乎想了解訪客登記的相關資訊，請點擊下方選單進行訪客登記。",
-                "command": "訪客登記"
+                "text": "您似乎想了解訪客登記的相關資訊，請點擊下方選單進行訪客登記。(尚未實裝)",
+                "command": "訪客登記",
+                "url": "https://noveres.github.io/fgbd",
+                "image_url": request.url_root + 'static/FK.png'
             },
             "maintenance": {  # 公共維修意圖
                 "text": "您需要報修公共設施嗎？請點擊下方填寫維修表單。",
@@ -295,21 +297,46 @@ def analyze_text(text):
             },
             "maintenance_status": {  # 維修進度查詢意圖
                 "text": "您想查詢維修進度，請點擊下方選單查看。",
-                "command": "維修進度查看"
+                "command": "維修進度查看",
+                "url": "https://noveres.github.io/fgbd/progress",
+                "image_url": request.url_root +'static/CK.png'
             },
             "announcement": {  # 公告查詢意圖
                 "text": "您可以通過下方選單查詢最新的公告資訊。",
-                "command": "公告查詢"
+                "command": "公告查詢",
+                "url": "https://noveres.github.io/fgbd/announcement",
+                "image_url": request.url_root +'static/CK.png'
             },
             "payment": {  # 繳費相關意圖
                 "text": "您可以使用下方選單快速繳費。",
-                "command": "快速繳費通道",
-                # "image_url": request.url_root + 'static/qr.png',
-                # "url": "https://www.google.com"  # 改為有效的URL
+                "command": "快速繳費通道"
             },
             "nearby_discount": {  # 週邊優惠意圖
                 "text": "您可以使用下方選單查看週邊店家的合作折扣信息。",
-                "command": "週邊店家的合作折扣"
+                "command": "週邊店家的合作折扣",
+                "template": {
+                    "type": "carousel",
+                    "columns": [
+                        {
+                            "thumbnail_image_url": request.url_root + 'static/01.png',
+                            "title": "餐飲優惠",
+                            "text": "附近餐廳的特別優惠",
+                            "actions": [{"type": "uri", "label": "查看詳情", "uri": "https://noveres.github.io/fgbd/UnderConstruction"}]
+                        },
+                        {
+                            "thumbnail_image_url": request.url_root + 'static/02.png',
+                            "title": "生活服務",
+                            "text": "日常生活相關優惠",
+                            "actions": [{"type": "uri", "label": "查看詳情", "uri": "https://noveres.github.io/fgbd/UnderConstruction"}]
+                        },
+                        {
+                            "thumbnail_image_url": request.url_root + 'static/03.png',
+                            "title": "娛樂休閒",
+                            "text": "休閒娛樂特別優惠",
+                            "actions": [{"type": "uri", "label": "查看詳情", "uri": "https://noveres.github.io/fgbd/UnderConstruction"}]
+                        }
+                    ]
+                }
             },
             "help": {  # 幫助意圖
                 "text": "您好！我是社區服務機器人，可以幫您處理訪客登記、公共維修、查詢公告、繳費以及提供周邊優惠信息。請告訴我您需要什麼幫助？",
@@ -338,7 +365,7 @@ def analyze_text(text):
             top_intent = chinese_to_english_intent[top_intent]
         
         # 如果是已知意圖且信心度足夠
-        if top_intent in intent_mapping and confidence >= 0.6:
+        if top_intent in intent_mapping and confidence >= 0.5:
             response = intent_mapping[top_intent]["text"]
             command = intent_mapping[top_intent]["command"]
             
@@ -536,7 +563,7 @@ def handle_message(event):
                         actions=[
                             URIAction(
                                 label='按我前往',
-                                uri='https://www.google.com'
+                                uri='https://noveres.github.io/fgbd/UnderConstruction'
                             )
                         ]
                     ),
@@ -547,7 +574,7 @@ def handle_message(event):
                         actions=[
                             URIAction(
                                 label='按我前往',
-                                uri='https://www.google.com'
+                                uri='https://noveres.github.io/fgbd/UnderConstruction'
                             )
                         ]
                     ),
@@ -558,7 +585,7 @@ def handle_message(event):
                         actions=[
                             URIAction(
                                 label='按我前往',
-                                uri='https://www.google.com'
+                                uri='https://noveres.github.io/fgbd/UnderConstruction'
                             )
                         ]
                     ),
@@ -665,6 +692,15 @@ def handle_message(event):
                 # 調用 analyze_text 函數分析用戶輸入
                 result, response_text, command = analyze_text(user_text)
                 
+                # 如果返回的是模板消息
+                if isinstance(command, TemplateMessage):
+                    line_bot_api.reply_message(
+                        ReplyMessageRequest(
+                            reply_token=event.reply_token,
+                            messages=[command]
+                        )
+                    )
+                    return
                 print(f"分析結果: 意圖={result.get('result', {}).get('prediction', {}).get('topIntent', '未知')}")
                 print(f"回應內容: {response_text}")
                 
@@ -676,43 +712,70 @@ def handle_message(event):
                 
                 # 獲取意圖映射
                 intent_mapping = {
-                    "visitor_registration": {  # 訪客登記意圖
-                        "text": "您似乎想了解訪客登記的相關資訊，請點擊下方選單進行訪客登記。",
-                        "command": "訪客登記"
-                    },
-                    "maintenance": {  # 公共維修意圖
-                        "text": "您需要報修公共設施嗎？請點擊下方填寫維修表單。",
-                        "command": "公共維修填報",
-                        "url": "https://noveres.github.io/fgbd/maintenance",
-                        "image_url": request.url_root + 'static/WS.png'
-                    },
-                    "maintenance_status": {  # 維修進度查詢意圖
-                        "text": "您想查詢維修進度，請點擊下方選單查看。",
-                        "command": "維修進度查看"
-                    },
-                    "announcement": {  # 公告查詢意圖
-                        "text": "您可以通過下方選單查詢最新的公告",
-                        "command": "公告查詢"
-                    },
-                    "payment": {  # 繳費相關意圖
-                        "text": "您可以使用下方選單快速繳費",
-                        "command": "快速繳費通道",
-                        # "image_url": request.url_root + 'static/qr.png',
-                        # "url": "https://www.google.com"  # 改為有效的URL
-                    },
-                    "nearby_discount": {  # 週邊優惠意圖
-                        "text": "您可以使用下方選單查看週邊店家的合作折扣信息",
-                        "command": "週邊店家的合作折扣"
-                    },
-                    "help": {  # 幫助意圖
-                        "text": "您好！我是社區服務機器人，可以幫您處理訪客登記、公共維修、查詢公告、繳費以及提供周邊優惠信息。請告訴我您需要什麼幫助？",
-                        "command": None
-                    },
-                    "greeting": {  # 問候意圖
-                        "text": "您好！有什麼我可以幫您的嗎？您可以詢問有關訪客登記、公共維修、公告查詢等服務。",
-                        "command": None
-                    }
+            "visitor_registration": {  # 訪客登記意圖
+                "text": "您似乎想了解訪客登記的相關資訊，請點擊下方選單進行訪客登記。",
+                "command": "訪客登記",
+                "url": "https://noveres.github.io/fgbd/maintenance",
+                "image_url": request.url_root + 'static/FK.png'
+            },
+            "maintenance": {  # 公共維修意圖
+                "text": "您需要報修公共設施嗎？請點擊下方填寫維修表單。",
+                "command": "公共維修填報",
+                "url": "https://noveres.github.io/fgbd/maintenance",
+                "image_url": request.url_root + 'static/WS.png'
+            },
+            "maintenance_status": {  # 維修進度查詢意圖
+                "text": "您想查詢維修進度，請點擊下方選單查看。",
+                "command": "維修進度查看",
+                "url": "https://noveres.github.io/fgbd/progress",
+                "image_url": request.url_root +'static/CK.png'
+            },
+            "announcement": {  # 公告查詢意圖
+                "text": "您可以通過下方選單查詢最新的公告資訊。",
+                "command": "公告查詢",
+                "url": "https://noveres.github.io/fgbd/announcements",
+                "image_url": request.url_root +'static/CK.png'
+            },
+            "payment": {  # 繳費相關意圖
+                "text": "您可以使用下方選單快速繳費。",
+                "command": "快速繳費通道"
+            },
+            "nearby_discount": {  # 週邊優惠意圖
+                "text": "您可以使用下方選單查看週邊店家的合作折扣信息。",
+                "command": "週邊店家的合作折扣",
+                "template": {
+                    "type": "carousel",
+                    "columns": [
+                        {
+                            "thumbnail_image_url": request.url_root + 'static/01.png',
+                            "title": "餐飲優惠",
+                            "text": "附近餐廳的特別優惠",
+                            "actions": [{"type": "uri", "label": "查看詳情", "uri": "https://noveres.github.io/fgbd/UnderConstruction"}]
+                        },
+                        {
+                            "thumbnail_image_url": request.url_root + 'static/02.png',
+                            "title": "生活服務",
+                            "text": "日常生活相關優惠",
+                            "actions": [{"type": "uri", "label": "查看詳情", "uri": "https://noveres.github.io/fgbd/UnderConstruction"}]
+                        },
+                        {
+                            "thumbnail_image_url": request.url_root + 'static/03.png',
+                            "title": "娛樂休閒",
+                            "text": "休閒娛樂特別優惠",
+                            "actions": [{"type": "uri", "label": "查看詳情", "uri": "https://noveres.github.io/fgbd/UnderConstruction"}]
+                        }
+                    ]
                 }
+            },
+            "help": {  # 幫助意圖
+                "text": "您好！我是社區服務機器人，可以幫您處理訪客登記、公共維修、查詢公告、繳費以及提供周邊優惠信息。請告訴我您需要什麼幫助？",
+                "command": None
+            },
+            "greeting": {  # 問候意圖
+                "text": "您好！有什麼我可以幫您的嗎？您可以詢問有關訪客登記、公共維修、公告查詢等服務。",
+                "command": None
+            }
+        }
                 
                 # 特殊處理：如果命令是"私人維修"，添加物業管理處連絡信息
                 if command == "私人維修":
